@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { AuctionBid } from '../../components/AuctionBid';
-import { AuctionChat } from '../../components/AuctionChat';
+import { useRef, useState } from 'react';
+import { AuctionBid, ContentReference } from '../../components/AuctionBid';
 import Navbar from '../../components/Navbar';
 import { PulseCards } from '../../components/PulseCards';
 
@@ -16,7 +15,20 @@ import { PulseCards } from '../../components/PulseCards';
 
 // Pegar Id na url: <h1>{`Auction:${window.location.pathname}`}</h1>
 export const Auction = () => {
+  const auctionID = window.location.pathname.split('/').pop() as string;
+  const websocket = new WebSocket(
+    `ws://localhost:8080/ws?auctionName=${auctionID}`,
+  );
   const [loading, setLoading] = useState(false);
+
+  const auctionBidRef = useRef({} as ContentReference);
+
+  websocket.addEventListener('message', (event) => {
+    auctionBidRef.current.setContent([
+      ...auctionBidRef.current.content,
+      event.data as string,
+    ]);
+  });
 
   return (
     <>
@@ -30,7 +42,11 @@ export const Auction = () => {
           ) : (
             <>
               <div className="flex flex-col items-center bg-[#1F1F35] p-10 mb-10 rounded-md min-w-2/3 min-h-5/6">
-                <AuctionBid />
+                <AuctionBid
+                  reference={auctionBidRef}
+                  auctionID={auctionID}
+                  websocket={websocket}
+                />
               </div>
             </>
           )}

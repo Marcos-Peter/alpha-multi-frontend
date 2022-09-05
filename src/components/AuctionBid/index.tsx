@@ -1,9 +1,25 @@
 import { useState } from 'react';
+import { currencyMask } from '../../mask/currencyMask';
 import { AuctionChat } from '../AuctionChat';
 
-export const AuctionBid = () => {
-  const [content, setContent] = useState<string[]>(['oi', 'hello']);
+interface ContentReference {
+  content: string[];
+  setContent: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+interface PropTypes {
+  auctionID: string;
+  websocket: WebSocket;
+  reference: React.MutableRefObject<ContentReference>;
+}
+
+export const AuctionBid = (props: PropTypes) => {
+  const [content, setContent] = useState<string[]>(['Você entrou na sala.']);
   const [bid, setBid] = useState<string>('');
+
+  // eslint-disable-next-line no-param-reassign
+  props.reference.current = { content, setContent };
+
   return (
     <>
       <AuctionChat content={content} />
@@ -35,16 +51,20 @@ export const AuctionBid = () => {
               <input
                 type="text"
                 value={bid}
-                onChange={(e) => setBid(e.target.value)}
+                onChange={(e) => setBid(`R$ ${currencyMask(e.target.value)}`)}
                 className="m-3 h-[40px] bg-gray-200 text-center text-xs text-gray-500 appearance-none border-none"
               />
             </div>
             <div
               onClick={() => {
                 if (bid) {
-                  const test = [...content, bid];
-                  setContent(test);
-                  setBid('');
+                  props.websocket.send(
+                    JSON.stringify({
+                      auctionName: props.auctionID,
+                      userName: 'Carlos',
+                      message: bid,
+                    }),
+                  );
                 }
               }}
               className="hover:cursor-pointer hover:bg-[#3752FE] bg-checkmark bg-no-repeat bg-center ml-3 m-1 w-[50px] h-[50px] rounded-2xl bg-[#3772FE]"
@@ -59,3 +79,5 @@ export const AuctionBid = () => {
     </>
   );
 };
+
+export type { ContentReference };

@@ -32,7 +32,7 @@ export const AuctionChat = ({ content }: PropsType) => {
           </div>
           <p className="w-20 text-end m-3 mr-5">14 Lances Feitos</p>
         </div>
-        <div className="flex flex-col mt-2 items-center justify-center">
+        <div className="flex flex-col mt-2 items-center justify-center overflow-y-auto">
           <div className="h-[250px] overflow-auto">{message}</div>
           <div className="flex flex-col items-center">
             <p className="m-1">Valor Inicial R$5.000,00</p>
