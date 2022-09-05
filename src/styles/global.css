@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply m-0 p-0 box-border outline-none;
+}
+
+*::-webkit-scrollbar {
+  @apply w-2 bg-zinc-400;
+}
+
+*::-webkit-scrollbar-track {
+  @apply m-0 rounded-md;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-zinc-600 rounded-sm;
+}
+
+*::-webkit-scrollbar-button {
+  @apply h-0;
+}
+
+html,
+body,
+#root {
+  @apply w-screen h-screen flex flex-col justify-center items-center leading-none overflow-x-hidden bg-gradient-to-r from-indigo-800 via-purple-800 to-pink-800;
+}
+
+input {
+  @apply w-[300px] h-12 pl-3 border border-stone-500 rounded leading-none focus:outline-none text-emerald-900 font-medium;
+}
+::placeholder {
+  @apply text-blue-800 font-normal;
+}
+
+button {
+  @apply cursor-pointer;
+}
