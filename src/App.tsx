@@ -2,8 +2,9 @@ import { SnackbarProvider } from 'notistack';
 import { makeStyles } from '@material-ui/core/styles';
 
 import './styles/global.css';
+import { BrowserRouter } from 'react-router-dom';
 import { Router } from './routes/routes';
-import { AppProvider } from './providers';
+import { UserDataProvider } from './providers/UserDataProvider';
 
 const useStyles = makeStyles(() => ({
   success: { backgroundColor: '#5CB29A', color: '#f7f7f7' },
@@ -27,25 +28,27 @@ const useStyles = makeStyles(() => ({
 export const App = () => {
   const classes = useStyles();
   return (
-    <SnackbarProvider
-      maxSnack={3}
-      hideIconVariant
-      preventDuplicate
-      autoHideDuration={3000}
-      classes={{
-        variantSuccess: classes.success,
-        variantError: classes.error,
-        variantWarning: classes.warning,
-        variantInfo: classes.info,
-      }}
-      anchorOrigin={{
-        horizontal: 'right',
-        vertical: 'bottom',
-      }}
-    >
-      <AppProvider>
-        <Router />
-      </AppProvider>
-    </SnackbarProvider>
+    <BrowserRouter>
+      <SnackbarProvider
+        maxSnack={3}
+        hideIconVariant
+        preventDuplicate
+        autoHideDuration={3000}
+        classes={{
+          variantSuccess: classes.success,
+          variantError: classes.error,
+          variantWarning: classes.warning,
+          variantInfo: classes.info,
+        }}
+        anchorOrigin={{
+          horizontal: 'right',
+          vertical: 'bottom',
+        }}
+      >
+        <UserDataProvider>
+          <Router />
+        </UserDataProvider>
+      </SnackbarProvider>
+    </BrowserRouter>
   );
 };

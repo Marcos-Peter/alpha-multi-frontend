@@ -1,5 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { logout } from '../../apiCalls/logout';
+import { UserDataContext } from '../../providers/UserDataProvider';
 
 interface PropsType {
   to: string;
@@ -20,6 +22,13 @@ function CustomLink({ to, children }: PropsType) {
 }
 
 export default function Navbar() {
+  const userInfo = useContext(UserDataContext);
+
+  async function executeLogout() {
+    await logout();
+    userInfo.setUserLogged('');
+  }
+
   return (
     <nav className="fixed z-50 mr-12 flex flex-col justify-between py-12 px-3 bg-[#16162D] h-full text-white">
       <div>
@@ -42,7 +51,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      <Link to="/home" className="flex flex-row items-center mb-12">
+      <Link
+        onClick={executeLogout}
+        to="/home"
+        className="flex flex-row items-center mb-12"
+      >
         <div className="w-6 h-6 mr-1 bg-logout bg-contain border-none" />
         <p className="not-italic font-bold text-lg leading-5">Sair</p>
       </Link>

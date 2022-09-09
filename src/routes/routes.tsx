@@ -1,36 +1,59 @@
-import { ReactElement } from 'react';
+import { ReactElement, useContext, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Wallet } from '../pages/Wallet';
-import { useUser } from '../contexts/UserContext';
-import { Home } from '../pages/Home';
 import { DashBoard } from '../pages/DashBoard';
 import { Auction } from '../pages/Auction';
 import { Profile } from '../pages/Profile';
-
-// import { Home } from '../pages/Home';
+import { UserDataContext } from '../providers/UserDataProvider';
+import { LoginPage } from '../pages/Home/LoginPage';
+import { RegisterPage } from '../pages/Home/RegisterPage';
+import { MainBackground } from '../components/MainBackground';
 
 interface ChildrenTypes {
   children: ReactElement;
 }
 
 const Private = ({ children }: ChildrenTypes) => {
-  const { user } = useUser();
+  const userInfo = useContext(UserDataContext);
+  const [isLogged, setIsLogged] = useState('loading');
 
-  if (!user) {
-    return <Navigate to="/home" />;
+  async function checkIfUserIsLogged() {
+    const result = await userInfo.isLogged();
+    setIsLogged(String(result));
   }
 
-  return children;
+  checkIfUserIsLogged();
+
+  // eslint-disable-next-line no-nested-ternary
+  return isLogged === 'false' ? (
+    <Navigate to="/home" />
+  ) : isLogged === 'true' ? (
+    children
+  ) : (
+    <MainBackground></MainBackground>
+  );
 };
 
 const Public = ({ children }: ChildrenTypes) => {
-  const { user } = useUser();
+  const userInfo = useContext(UserDataContext);
 
-  if (user !== null) {
-    return <Navigate to="/dashboard" />;
+  const [isLogged, setIsLogged] = useState('loading');
+
+  async function checkIfUserIsLogged() {
+    const result = await userInfo.isLogged();
+    setIsLogged(String(result));
   }
 
-  return children;
+  checkIfUserIsLogged();
+
+  // eslint-disable-next-line no-nested-ternary
+  return isLogged === 'true' ? (
+    <Navigate to="/dashboard" />
+  ) : isLogged === 'false' ? (
+    children
+  ) : (
+    <MainBackground></MainBackground>
+  );
 };
 
 export const Router = () => (
@@ -40,7 +63,15 @@ export const Router = () => (
       path="/home"
       element={
         <Public>
-          <Home />
+          <LoginPage />
+        </Public>
+      }
+    />
+    <Route
+      path="/register"
+      element={
+        <Public>
+          <RegisterPage />
         </Public>
       }
     />

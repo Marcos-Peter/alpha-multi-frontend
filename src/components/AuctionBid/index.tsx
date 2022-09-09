@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { currencyMask } from '../../mask/currencyMask';
+import { currencyMask } from '../../masks/currencyMask';
 import { AuctionChat } from '../AuctionChat';
 
 interface ContentReference {
