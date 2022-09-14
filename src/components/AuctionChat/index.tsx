@@ -1,4 +1,6 @@
 import { ReactNode } from 'react';
+import { currencyMask } from '../../masks/currencyMask';
+import { inputMask } from '../../masks/inputMask';
 
 interface PropsType {
   content: string[];
@@ -31,12 +33,19 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
               <p className="w-20 text-sm">01:23s para terminar</p>
             </div>
           </div>
-          <p className="w-20 text-end m-3 mr-5">14 Lances Feitos</p>
+          <p className="w-20 text-end m-3 mr-5">
+            {content.length - 1} Lances Feitos
+          </p>
         </div>
-        <div className="flex flex-col mt-2 items-center justify-center overflow-y-auto">
-          <div className="h-[250px] overflow-auto">{message}</div>
+        <div className="flex flex-col mt-2 items-center justify-center">
+          <div className="flex flex-col justify-end h-[250px]  overflow-auto">
+            {message}
+          </div>
           <div className="flex flex-col items-center">
-            <p className="m-1">Valor Inicial R$5.000,00 / Atual: {actualBid}</p>
+            <p className="m-1">
+              Valor Inicial R$5.000,00 / Atual:{' '}
+              {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
+            </p>
             <p className="m-1">Leilão aberto às 14:35</p>
           </div>
         </div>
