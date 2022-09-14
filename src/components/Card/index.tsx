@@ -37,7 +37,7 @@ export const Card = ({ title, image, id }: ChildrenTypes) => {
         />
       )}
 
-      <div className="hover:bg-gray-100 grid  relative w-48 h-72 m-2 mb-7 bg-gray-200  justify-start border-solid border-2 hover:border-3 hover:border-purple-900 rounded-2xl hover:shadow-2xl">
+      <div className="hover:bg-gray-100 grid  relative w-[195px] h-[192px] m-2 mb-7 bg-gray-200  justify-center border-solid border-2 hover:border-3 hover:border-purple-900 rounded-2xl hover:shadow-2xl">
         <Link
           to={`/auction/${id}`}
           className="flex flex-col justify-items-start justify-center items-center hover:cursor-pointer"
@@ -45,22 +45,17 @@ export const Card = ({ title, image, id }: ChildrenTypes) => {
           <img
             src={image}
             alt="Add Image"
-            className="w-48 h-48 justify-center rounded-2xl"
+            className="w-48 h-32 justify-center rounded-2xl"
           />
           <div className="flex justify-center flex-grow justify items-start">
-            <h3 className="font-semibold overflow-hidden p-1 m-2 w-[94px] h-20  not-italic text-start text-base text-header-dark dark:text-header-light">
+            <h3 className="font-bold text-2xs mt-1  overflow-hidden p-1 ml-3 w-[120px] h-20  not-italic text-center text-sm text-header-dark dark:text-header-light">
               {title}
             </h3>
-            <div className="text-end h-fit mt-4">
-              <p className="text-[12px]">Preço atual:</p>
-              <p className="font-medium">R$ 0,00</p>
+            <div className="text-end h-[80px] w-[60px] mt-2 mr-3">
+              <p className="text-[10px] mb-1">Preço atual:</p>
+              <p className="font-medium text-[10px]">R$ 25.000,00</p>
             </div>
-            <div className="items-center w-36 flex flex-grow justify-between absolute -bottom-6 z-10">
-              <button className="text-white text-xs font-semibold w-24 h-8 bg-blue-500 rounded-lg">
-                Dar um Lance
-              </button>
-              <button className="w-8 h-8 bg-red-500 rounded-lg bg-heart bg-no-repeat bg-center" />
-            </div>
+            <div className="items-center w-32 flex flex-grow justify-center absolute -bottom-4 z-10"></div>
           </div>
         </Link>
       </div>

@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { AuctionBid, ContentReference } from '../../components/AuctionBid';
 import Navbar from '../../components/Navbar';
 import { PulseCards } from '../../components/PulseCards';
+import { UserDataContext } from '../../providers/UserDataProvider';
 
 /**
  * Archive: src/pages/Auction/index.tsx
@@ -15,6 +16,8 @@ import { PulseCards } from '../../components/PulseCards';
 
 // Pegar Id na url: <h1>{`Auction:${window.location.pathname}`}</h1>
 export const Auction = () => {
+  const userInfo = useContext(UserDataContext);
+
   const auctionID = window.location.pathname.split('/').pop() as string;
   const websocket = new WebSocket(
     `ws://localhost:8080/ws?auctionName=${auctionID}`,
@@ -33,14 +36,28 @@ export const Auction = () => {
   return (
     <>
       <div className="flex flex-row w-full items-center h-full justify-between">
-        <Navbar />
-        <div className="grid justify-center items-start w-5/6  h-screen  m-10 ml-36  p-7">
+        <Navbar selected="auction" />
+        <div className="grid justify-between ml-5 items-start w-5/6  h-screen">
           {loading ? (
             <>
               <PulseCards />
             </>
           ) : (
-            <>
+            <div className="flex flex-col w-screen justify-start h-screen align-middle items-center">
+              <div className="flex flex-row justify-between items-center align-middle w-screen h-fit bg-[#16162D] p-2 mb-3 ">
+                <div className="flex ml-10 justify-end items-end">
+                  <div className=" mr-2 w-[30px] h-10 bg-no-repeat bg-auction bg-contain border-none" />
+                  <p className="not-italic font-bold text-base leading-7 text-white mb-1">
+                    Auction
+                  </p>
+                </div>
+                <div className="flex justify-center items-center align-middle">
+                  <p className="text-white mr-2 hidden sm:inline ">
+                    {userInfo.userLogged}
+                  </p>
+                  <div className="bg-white w-10 h-10 rounded-full mr-10"></div>
+                </div>
+              </div>
               <div className="flex flex-col items-center bg-[#1F1F35] p-10 mb-10 rounded-md min-w-2/3 min-h-5/6">
                 <AuctionBid
                   reference={auctionBidRef}
@@ -48,7 +65,7 @@ export const Auction = () => {
                   websocket={websocket}
                 />
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

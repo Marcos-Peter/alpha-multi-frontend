@@ -25,7 +25,7 @@
 html,
 body,
 #root {
-  @apply w-screen h-screen flex flex-col justify-center items-center leading-none overflow-x-hidden bg-gradient-to-r from-indigo-800 via-purple-800 to-pink-800;
+  @apply w-screen h-screen flex flex-col justify-center items-center leading-none overflow-x-hidden bg-gradient-to-r from-[#32407A] to-[#4E3D7F];
 }
 
 input {

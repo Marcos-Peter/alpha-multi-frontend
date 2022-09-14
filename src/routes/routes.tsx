@@ -8,6 +8,7 @@ import { UserDataContext } from '../providers/UserDataProvider';
 import { LoginPage } from '../pages/Home/LoginPage';
 import { RegisterPage } from '../pages/Home/RegisterPage';
 import { MainBackground } from '../components/MainBackground';
+import { Home } from '../pages/Home';
 
 interface ChildrenTypes {
   children: ReactElement;
@@ -15,45 +16,41 @@ interface ChildrenTypes {
 
 const Private = ({ children }: ChildrenTypes) => {
   const userInfo = useContext(UserDataContext);
-  const [isLogged, setIsLogged] = useState('loading');
+  /* const [isLogged, setIsLogged] = useState<boolean>(false);
 
   async function checkIfUserIsLogged() {
     const result = await userInfo.isLogged();
-    setIsLogged(String(result));
+    setIsLogged(result);
   }
 
   checkIfUserIsLogged();
 
-  // eslint-disable-next-line no-nested-ternary
-  return isLogged === 'false' ? (
-    <Navigate to="/home" />
-  ) : isLogged === 'true' ? (
-    children
-  ) : (
-    <MainBackground></MainBackground>
-  );
+  return isLogged === false ? <Navigate to="/home" /> : children; */
+  if (!userInfo.userLogged) {
+    return <Navigate to="/home" />;
+  }
+
+  return children;
 };
 
 const Public = ({ children }: ChildrenTypes) => {
   const userInfo = useContext(UserDataContext);
-
-  const [isLogged, setIsLogged] = useState('loading');
+  /* const [isLogged, setIsLogged] = useState<boolean>(false);
 
   async function checkIfUserIsLogged() {
     const result = await userInfo.isLogged();
-    setIsLogged(String(result));
+    setIsLogged(result);
+  } */
+
+  // checkIfUserIsLogged();
+
+  // return isLogged === true ? <Navigate to="/dashboard" /> : children;
+
+  if (userInfo.userLogged) {
+    return <Navigate to="/dashboard" />;
   }
 
-  checkIfUserIsLogged();
-
-  // eslint-disable-next-line no-nested-ternary
-  return isLogged === 'true' ? (
-    <Navigate to="/dashboard" />
-  ) : isLogged === 'false' ? (
-    children
-  ) : (
-    <MainBackground></MainBackground>
-  );
+  return children;
 };
 
 export const Router = () => (
@@ -63,15 +60,7 @@ export const Router = () => (
       path="/home"
       element={
         <Public>
-          <LoginPage />
-        </Public>
-      }
-    />
-    <Route
-      path="/register"
-      element={
-        <Public>
-          <RegisterPage />
+          <Home />
         </Public>
       }
     />

@@ -2,9 +2,10 @@ import { ReactNode } from 'react';
 
 interface PropsType {
   content: string[];
+  actualBid: number;
 }
 
-export const AuctionChat = ({ content }: PropsType) => {
+export const AuctionChat = ({ content, actualBid }: PropsType) => {
   const message = content.map((messageItem, index) => {
     return (
       <div
@@ -35,7 +36,7 @@ export const AuctionChat = ({ content }: PropsType) => {
         <div className="flex flex-col mt-2 items-center justify-center overflow-y-auto">
           <div className="h-[250px] overflow-auto">{message}</div>
           <div className="flex flex-col items-center">
-            <p className="m-1">Valor Inicial R$5.000,00</p>
+            <p className="m-1">Valor Inicial R$5.000,00 / Atual: {actualBid}</p>
             <p className="m-1">Leilão aberto às 14:35</p>
           </div>
         </div>

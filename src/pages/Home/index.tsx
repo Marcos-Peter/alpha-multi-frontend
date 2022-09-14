@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { authenticateLogin } from '../../apiCalls/authenticateLogin';
+import { createLogin } from '../../apiCalls/createLogin';
+import { UserDataContext } from '../../providers/UserDataProvider';
 /**
  * Archive: src/pages/Home/index.tsx
  *
@@ -17,19 +21,52 @@ export const Home = () => {
 
   const [changeVision, setChangeVision] = useState(true);
 
-  // const userContext = useUser();
+  const navigate = useNavigate();
 
-  const handleSubmitLogin = (e: { preventDefault: () => void }) => {
+  const userInfo = useContext(UserDataContext);
+
+  const handleSubmitLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // requisição para fazer login
-    console.log('submit', email, password);
+    if (!(name && password)) alert('inputs vazios');
+
+    const result = await authenticateLogin(name, password);
+
+    if (!result.success) {
+      alert(result.message);
+    }
+
+    userInfo.setUserLogged(result.data.userName);
+
+    navigate('/dashboard');
   };
 
-  const handleSubmitRegister = (e: { preventDefault: () => void }) => {
+  const handleSubmitRegister = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // requisição para fazer registro no sistema
-    console.log('submit', email, password);
+    if (!(name && password && confirmPassword)) return;
+
+    /* if (!(email === confirmEmail)) {
+      alert('Os emails devem ser iguais');
+      return;
+    } */
+
+    if (!(password === confirmPassword)) {
+      alert('As senhas devem ser iguais');
+      return;
+    }
+
+    const result = await createLogin(name, password);
+
+    if (!result.success) {
+      alert(result.message);
+
+      return;
+    }
+
+    navigate('/');
   };
+
   return (
     <>
       {' '}
@@ -44,11 +81,11 @@ export const Home = () => {
           <div className="box-border flex flex-col rounded">
             <input
               className="w-72 h-10 mb-7"
-              type="email"
-              placeholder="Digite seu email"
-              value={email}
+              type="text"
+              placeholder="Digite seu username"
+              value={name}
               onChange={(e) => {
-                setEmail(e.target.value);
+                setName(e.target.value);
               }}
             />
             <input
@@ -84,28 +121,10 @@ export const Home = () => {
             <input
               className="w-72 h-10 mb-7"
               type="text"
-              placeholder="Digite seu nome"
+              placeholder="Digite seu username"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-              }}
-            />
-            <input
-              className="w-72 h-10 mb-7"
-              type="email"
-              placeholder="Digite seu email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-            <input
-              className="w-72 h-10 mb-7"
-              type="email"
-              placeholder="Confirme seu email"
-              value={confirmEmail}
-              onChange={(e) => {
-                setConfirmEmail(e.target.value);
               }}
             />
             <input

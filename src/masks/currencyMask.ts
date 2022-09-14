@@ -1,4 +1,5 @@
 function currencyMask(value: string) {
+  console.log(parseFloat(value).toFixed(2));
   return parseFloat(
     value
       .replace(/(.*){1}/, '0$1')

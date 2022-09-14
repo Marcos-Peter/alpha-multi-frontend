@@ -9,6 +9,11 @@ module.exports = {
       fontFamily: {
         body: ['Poppins'],
       },
+      fontSize: {
+        '2xs': ['11px', {
+          letterSpacing: '0.00em',
+          lineHeight: '1.2',
+        }]},
       backgroundImage: {
         'auction': "url('../src/assets/auction.svg')",
         'dashboard': "url('../src/assets/dashboard.svg')",
@@ -25,6 +30,10 @@ module.exports = {
         'checkmark': 'url("../src/images/checkmark.svg")',
         'x-grey': 'url("../src/images/x-grey.svg")',
         'live': 'url("../src/images/live.svg")',
+        'selectedNavbar': 'url("../src/images/selectedNavbar.svg")',
+        'menu-black': 'url("../src/images/menu-black.svg")',
+        'menu-white': 'url("../src/images/menu-white.svg")',
+        'lupa-white': 'url("../src/images/lupa-white.svg")',
       },
       colors: {},
       borderRadius: {

@@ -8,6 +8,10 @@ interface PropsType {
   children: ReactNode;
 }
 
+interface ChildrenTypes {
+  selected: 'dashboard' | 'wallet' | 'profile' | 'auction';
+}
+
 function CustomLink({ to, children }: PropsType) {
   const resolvedPath = useResolvedPath(to);
   const isActive = useMatch({ path: resolvedPath.pathname, end: true });
@@ -21,44 +25,116 @@ function CustomLink({ to, children }: PropsType) {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ selected }: ChildrenTypes) {
   const userInfo = useContext(UserDataContext);
+  const [sidebarClosed, setSidebarClosed] = useState<boolean>(true);
+
+  function sideBarState() {
+    setSidebarClosed(!sidebarClosed);
+  }
 
   async function executeLogout() {
     await logout();
     userInfo.setUserLogged('');
   }
 
-  return (
-    <nav className="fixed z-50 mr-12 flex flex-col justify-between py-12 px-3 bg-[#16162D] h-full text-white">
-      <div>
-        <Link to="/" className="flex flex-col items-center mb-12">
-          <div className="w-[60px] h-16 bg-auction bg-contain border-none" />
-          <p className="not-italic font-bold text-xl leading-7"> Auction</p>
-        </Link>
-        <div className="not-italic font-bold text-sm leading-5">
-          <p>Plataforma</p>
-          <ul>
-            <CustomLink to="/dashboard">
-              <div className="w-4 h-4 mr-1 bg-dashboard bg-contain border-none bg-center bg-no-repeat" />
-              <p>Dashboard</p>
-            </CustomLink>
-            <CustomLink to="/wallet">
-              <div className="w-4 h-4 mr-1 bg-wallet bg-contain border-none" />
-              <p>Wallet</p>
-            </CustomLink>
-          </ul>
-        </div>
-      </div>
+  let navbarButtonDashboard = 'text-white';
+  let navbarButtonWallet = 'text-white';
+  let navbarButtonProfile = 'text-white';
+  let navbarButtonAuction = 'text-white';
 
-      <Link
-        onClick={executeLogout}
-        to="/home"
-        className="flex flex-row items-center mb-12"
-      >
-        <div className="w-6 h-6 mr-1 bg-logout bg-contain border-none" />
-        <p className="not-italic font-bold text-lg leading-5">Sair</p>
-      </Link>
-    </nav>
+  const selectedNavbar = (selectedItem: string) => {
+    switch (selectedItem) {
+      case 'dashboard':
+        navbarButtonDashboard = 'text-purple-800';
+        break;
+      case 'wallet':
+        navbarButtonWallet = 'text-purple-800';
+        break;
+      case 'profile':
+        navbarButtonProfile = 'text-purple-800';
+        break;
+      case 'auction':
+        navbarButtonAuction = 'text-purple-800';
+        break;
+      default:
+        navbarButtonDashboard = 'text-white';
+        break;
+    }
+  };
+
+  selectedNavbar(selected);
+  return (
+    <>
+      {sidebarClosed ? (
+        <nav className="absolute z-50  flex flex-col justify-between py-3 px-3 bg-[#16162D] h-full text-white">
+          <div>
+            <div className="flex sm:flex-col items-center mb-12">
+              <div
+                onClick={sideBarState}
+                className="w-[30px] bg-no-repeat h-10 bg-menu-white bg-contain border-none mr-3"
+              />
+            </div>
+            <div className="not-italic font-bold text-sm leading-5 ">
+              <ul>
+                <CustomLink to="/dashboard">
+                  <div className="w-5 h-5 mb-4 mr-3 bg-dashboard bg-contain border-none bg-center bg-no-repeat" />
+                </CustomLink>
+                <CustomLink to="/wallet">
+                  <div className="w-5 h-5 mb-4 mr-1 bg-wallet bg-contain border-none" />
+                </CustomLink>
+              </ul>
+            </div>
+          </div>
+
+          <Link
+            onClick={executeLogout}
+            to="/home"
+            className="flex flex-row items-center mb-12"
+          >
+            <div className="w-6 h-6 mr-1 bg-logout bg-contain border-none" />
+          </Link>
+        </nav>
+      ) : (
+        <nav className="fixed z-50 flex flex-col justify-between py-3 px-3 bg-[#16162D] h-full text-white">
+          <div>
+            <div className="flex items-center mb-12">
+              <div
+                onClick={sideBarState}
+                className="mr-2 w-[30px] h-10 bg-no-repeat bg-menu-white bg-contain border-none"
+              />
+              <div
+                onClick={sideBarState}
+                className="ml-4 mr-2 mb-1 w-[30px] h-10 bg-no-repeat bg-auction bg-contain border-none"
+              />
+              <p className="not-italic font-bold text-base leading-7">
+                Auction
+              </p>
+            </div>
+            <div className="not-italic font-bold text-sm leading-5">
+              <ul>
+                <CustomLink to="/dashboard">
+                  <div className="w-5 h-5 mb-4 mr-8 ml-0 bg-dashboard bg-contain border-none bg-center bg-no-repeat" />
+                  <p className={`${navbarButtonDashboard} `}>Dashboard</p>
+                </CustomLink>
+                <CustomLink to="/wallet">
+                  <div className="w-5 h-5 mb-4 mr-8 bg-wallet bg-contain border-none" />
+                  <p className={navbarButtonWallet}>Wallet</p>
+                </CustomLink>
+              </ul>
+            </div>
+          </div>
+
+          <Link
+            onClick={executeLogout}
+            to="/home"
+            className="flex flex-row items-center mb-12"
+          >
+            <div className="w-6 h-6 mr-2 bg-logout bg-contain border-none" />
+            <p className="not-italic font-bold text-lg leading-5 ml-8">Sair</p>
+          </Link>
+        </nav>
+      )}
+    </>
   );
 }
