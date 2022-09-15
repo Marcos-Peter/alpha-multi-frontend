@@ -1,6 +1,6 @@
-async function authenticateLogin(userName: string, password: string) {
+async function authenticateLogin(username: string, password: string) {
   const body = {
-    userName,
+    username,
     password,
   };
 

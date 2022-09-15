@@ -4,7 +4,7 @@ import { checkLogin } from '../apiCalls/checkLogin';
 interface UserDataProps {
   isLogged: () => Promise<boolean>;
   userLogged: string;
-  setUserLogged: (userName: string) => void;
+  setUserLogged: (username: string) => void;
 }
 
 const UserDataContext = createContext({} as UserDataProps);

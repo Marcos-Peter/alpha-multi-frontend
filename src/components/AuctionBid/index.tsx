@@ -91,7 +91,7 @@ export const AuctionBid = (props: PropTypes) => {
                   props.websocket.send(
                     JSON.stringify({
                       auctionName: props.auctionID,
-                      userName: userInfo.userLogged,
+                      username: userInfo.userLogged,
                       message: bid,
                     }),
                   );

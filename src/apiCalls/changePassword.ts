@@ -1,10 +1,10 @@
 async function changePassword(
-  userName: string,
+  username: string,
   currentPassword: string,
   newPassword: string,
 ) {
   const body = {
-    userName,
+    username,
     currentPassword,
     newPassword,
   };

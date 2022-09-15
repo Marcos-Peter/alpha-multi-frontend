@@ -36,7 +36,7 @@ function LoginPage() {
       return;
     }
 
-    userInfo.setUserLogged(result.data.userName);
+    userInfo.setUserLogged(result.data.username);
 
     navigate('/dashboard');
   }
