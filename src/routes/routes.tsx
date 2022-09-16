@@ -1,13 +1,10 @@
-import { ReactElement, useContext, useState } from 'react';
+import { ReactElement, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Wallet } from '../pages/Wallet';
 import { DashBoard } from '../pages/DashBoard';
 import { Auction } from '../pages/Auction';
 import { Profile } from '../pages/Profile';
 import { UserDataContext } from '../providers/UserDataProvider';
-import { LoginPage } from '../pages/Home/LoginPage';
-import { RegisterPage } from '../pages/Home/RegisterPage';
-import { MainBackground } from '../components/MainBackground';
 import { Home } from '../pages/Home';
 
 interface ChildrenTypes {
@@ -16,16 +13,7 @@ interface ChildrenTypes {
 
 const Private = ({ children }: ChildrenTypes) => {
   const userInfo = useContext(UserDataContext);
-  /* const [isLogged, setIsLogged] = useState<boolean>(false);
 
-  async function checkIfUserIsLogged() {
-    const result = await userInfo.isLogged();
-    setIsLogged(result);
-  }
-
-  checkIfUserIsLogged();
-
-  return isLogged === false ? <Navigate to="/home" /> : children; */
   if (!userInfo.userLogged) {
     return <Navigate to="/home" />;
   }
@@ -35,16 +23,6 @@ const Private = ({ children }: ChildrenTypes) => {
 
 const Public = ({ children }: ChildrenTypes) => {
   const userInfo = useContext(UserDataContext);
-  /* const [isLogged, setIsLogged] = useState<boolean>(false);
-
-  async function checkIfUserIsLogged() {
-    const result = await userInfo.isLogged();
-    setIsLogged(result);
-  } */
-
-  // checkIfUserIsLogged();
-
-  // return isLogged === true ? <Navigate to="/dashboard" /> : children;
 
   if (userInfo.userLogged) {
     return <Navigate to="/dashboard" />;

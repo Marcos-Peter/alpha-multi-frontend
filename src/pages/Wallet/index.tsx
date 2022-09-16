@@ -12,7 +12,7 @@ import Navbar from '../../components/Navbar';
 export const Wallet = () => {
   return (
     <div className="flex flex-row w-full items-center h-full justify-between">
-      <Navbar></Navbar>
+      <Navbar selected={'dashboard'}></Navbar>
       <h1>oi</h1>
     </div>
   );
