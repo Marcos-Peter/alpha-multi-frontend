@@ -4,7 +4,7 @@ async function createLogin(username: string, password: string) {
     password,
   };
 
-  const fetchResponse = await fetch('http://localhost:8000/createLogin', {
+  const fetchResponse = await fetch('http://localhost:3000/createLogin', {
     method: 'POST',
     credentials: 'include',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
