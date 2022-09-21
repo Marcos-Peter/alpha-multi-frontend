@@ -9,7 +9,7 @@ async function changePassword(
     newPassword,
   };
 
-  const fetchResponse = await fetch('http://localhost:3000/changePassword', {
+  const fetchResponse = await fetch('http://localhost:8000/changePassword', {
     method: 'POST',
     credentials: 'include',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
