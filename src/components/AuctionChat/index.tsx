@@ -48,12 +48,16 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
           </p>
         </div>
         <div className="flex flex-col mt-2 items-center">
-          <div id="messages" onChange={scrollToBottom} className="flex flex-col h-[250px]  overflow-y-auto">
+          <div
+            id="messages"
+            onChange={scrollToBottom}
+            className="flex flex-col h-[250px]  overflow-y-auto"
+          >
             {message}
           </div>
           <div className="flex flex-col items-center">
             <p className="m-1">
-              Valor Inicial R$5.000,00 / Atual:{' '}
+              Valor Inicial R$100,56 / Atual:{' '}
               {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
             </p>
             <p className="m-1">Leilão aberto às 14:35</p>
