@@ -9,6 +9,7 @@ interface PropsType {
 
 export const AuctionChat = ({ content, actualBid }: PropsType) => {
   const message = content.map((messageItem, index) => {
+    scrollToBottom();
     return (
       <div
         key={index}
@@ -18,6 +19,15 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
       </div>
     );
   });
+
+  function scrollToBottom() {
+    const el = document.getElementById('messages');
+    if (el) {
+      setTimeout(() => {
+        el.scrollTop = el.scrollHeight;
+      }, 100);
+    }
+  }
 
   return (
     <>
@@ -37,8 +47,8 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
             {content.length - 1} Lances Feitos
           </p>
         </div>
-        <div className="flex flex-col mt-2 items-center justify-center">
-          <div className="flex flex-col justify-end h-[250px]  overflow-auto">
+        <div className="flex flex-col mt-2 items-center">
+          <div id="messages" onChange={scrollToBottom} className="flex flex-col h-[250px]  overflow-y-auto">
             {message}
           </div>
           <div className="flex flex-col items-center">
