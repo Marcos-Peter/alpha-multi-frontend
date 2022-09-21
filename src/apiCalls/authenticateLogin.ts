@@ -4,7 +4,7 @@ async function authenticateLogin(username: string, password: string) {
     password,
   };
 
-  const fetchResponse = await fetch('http://localhost:8000/authenticateLogin', {
+  const fetchResponse = await fetch('http://localhost:3000/authenticateLogin', {
     method: 'POST',
     credentials: 'include',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
