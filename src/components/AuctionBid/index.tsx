@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { currencyMask } from '../../masks/currencyMask';
 import { inputMask } from '../../masks/inputMask';
 import { UserDataContext } from '../../providers/UserDataProvider';
@@ -14,12 +14,16 @@ interface PropTypes {
   websocket: WebSocket;
   reference: React.MutableRefObject<ContentReference>;
 }
-
+interface LastBidType {
+  name: string;
+  bid: string;
+}
 export const AuctionBid = (props: PropTypes) => {
   const [content, setContent] = useState<string[]>(['Você entrou na sala.']);
   const [bid, setBid] = useState<string>('');
   const [actualBid, setActualBid] = useState<number>(100.558);
   const userInfo = useContext(UserDataContext);
+  const [lastBid, setLastBid] = useState<LastBidType>({ name: '', bid: '' });
   // eslint-disable-next-line no-param-reassign
   props.reference.current = { content, setContent };
 
@@ -35,6 +39,14 @@ export const AuctionBid = (props: PropTypes) => {
     }
   }
 
+  useEffect(() => {
+    if (content.length > 1) {
+      const name = content[content.length - 1].split('d')[0].trim();
+      const lastbid = content[content.length - 1].split('R$ ')[1];
+      setActualBid(Number(lastbid));
+      setLastBid({ name, bid: lastbid });
+    }
+  }, [content]);
   return (
     <>
       <AuctionChat content={content} actualBid={actualBid} />
@@ -72,7 +84,10 @@ export const AuctionBid = (props: PropTypes) => {
             >
               <p className="text-center text-sm">30%</p>
             </div>
-            <div className="flex justify-center items-center m-[6px] mt-3 w-[114px] h-7 rounded border-2 bg-[#14181B] hover:cursor-pointer text-center hover:bg-gray-800">
+            <div
+              onClick={() => alert(`${lastBid.name}  -  ${lastBid.bid}`)}
+              className="flex justify-center items-center m-[6px] mt-3 w-[114px] h-7 rounded border-2 bg-[#14181B] hover:cursor-pointer text-center hover:bg-gray-800"
+            >
               <p className=" text-xs text-white">Lance Customizado</p>
             </div>
           </div>
@@ -88,15 +103,18 @@ export const AuctionBid = (props: PropTypes) => {
             <div
               onClick={() => {
                 if (bid) {
-                  props.websocket.send(
-                    JSON.stringify({
-                      auctionName: props.auctionID,
-                      username: userInfo.userLogged,
-                      message: bid,
-                    }),
-                  );
+                  if (Number(bid.split('R$ ')[1]) > actualBid) {
+                    props.websocket.send(
+                      JSON.stringify({
+                        auctionName: props.auctionID,
+                        username: userInfo.userLogged,
+                        message: bid,
+                      }),
+                    );
+                  } else {
+                    alert('Valor precisa ser maior que o atual');
+                  }
                   setBid('');
-                  setActualBid(Number(bid.split('R$')[1]));
                 }
               }}
               placeholder="Digite um valor"
