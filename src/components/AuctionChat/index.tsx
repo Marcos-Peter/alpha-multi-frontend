@@ -40,10 +40,10 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
             </div>
             <div className="flex">
               <div className="ml-8 bg-clock-time bg-no-repeat h-5 w-5"></div>
-              <p className="w-20 text-sm">01:23s para terminar</p>
+              <p className="w-25 mb-2 text-sm">01:23s para terminar</p>
             </div>
           </div>
-          <p className="w-20 text-end m-3 mr-5">
+          <p className="w-25 text-end m-3 mr-5">
             {content.length - 1} Lances Feitos
           </p>
         </div>
