@@ -30,21 +30,12 @@ interface RespAuctionType {
   closed_at: string | null;
 }
 
-const arrayCards = async () => {
-  const resp = await getAllAuctions();
-
-  if (!resp.success) {
-    alert(resp.message);
-  }
-
-  return resp.data as RespAuctionType[];
-};
-
 export const DashBoard = () => {
   const userInfo = useContext(UserDataContext);
 
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [modaTitle, setModalTitle] = useState('Adicionar projeto');
   const [search, setSearch] = useState<boolean>(false);
   const [arrayCardsFiltered, setArrayCardsFiltered] = useState<
     RespAuctionType[]
@@ -60,6 +51,17 @@ export const DashBoard = () => {
       />
     );
   });
+
+  const arrayCards = async () => {
+    const resp = await getAllAuctions();
+
+    if (!resp.success) {
+      setModalTitle(resp.message);
+      setModal(true);
+    }
+
+    return resp.data as RespAuctionType[];
+  };
 
   /* const arrayTwoCards: JSX.Element[][] = [];
   const corte = 3;
@@ -109,7 +111,7 @@ export const DashBoard = () => {
       <div className="z-40">
         {modal && (
           <Modal
-            title="Adicionar projeto"
+            title={modaTitle}
             message=""
             setModal={setModal}
             handleConfirmModal={() => console.log('teste')}

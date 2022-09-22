@@ -17,6 +17,7 @@ export const Home = () => {
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [inputErrorMessage, setInputErrorMessage] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [changeVision, setChangeVision] = useState(true);
@@ -27,13 +28,19 @@ export const Home = () => {
 
   const handleSubmitLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setInputErrorMessage('');
+
     // requisição para fazer login
-    if (!(name && password)) alert('inputs vazios');
+    if (!(name && password)) {
+      setInputErrorMessage('Favor preencher os inputs');
+      return;
+    }
 
     const result = await authenticateLogin(name, password);
 
     if (!result.success) {
-      alert(result.message);
+      setInputErrorMessage(result.message);
+      return;
     }
 
     userInfo.setUserLogged(result.data.username);
@@ -43,8 +50,13 @@ export const Home = () => {
 
   const handleSubmitRegister = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setInputErrorMessage('');
+
     // requisição para fazer registro no sistema
-    if (!(name && password && confirmPassword)) return;
+    if (!(name && password && confirmPassword)) {
+      setInputErrorMessage('Favor preencher os inputs');
+      return;
+    }
 
     /* if (!(email === confirmEmail)) {
       alert('Os emails devem ser iguais');
@@ -52,15 +64,14 @@ export const Home = () => {
     } */
 
     if (!(password === confirmPassword)) {
-      alert('As senhas devem ser iguais');
+      setInputErrorMessage('As senhas devem ser iguais');
       return;
     }
 
     const result = await createLogin(name, password);
 
     if (!result.success) {
-      alert(result.message);
-
+      setInputErrorMessage(result.message);
       return;
     }
 
@@ -89,7 +100,7 @@ export const Home = () => {
               }}
             />
             <input
-              className="w-72 h-10 mb-7"
+              className="w-72 h-10 mb-1"
               type="password"
               placeholder="Digite sua senha"
               value={password}
@@ -97,14 +108,17 @@ export const Home = () => {
                 setPassword(e.target.value);
               }}
             />
+            <p className="w-72 text-red-700 mb-5 text-center">
+              {inputErrorMessage}
+            </p>
           </div>
 
-          <button className=" w-72 h-10 bg-purple-800 rounded text-white">
+          <button className="w-72 h-10 bg-purple-800 rounded text-white">
             Entrar
           </button>
           <button
             onClick={() => setChangeVision(false)}
-            className=" w-72 h-10 text-white bg-transparent"
+            className="w-72 h-10 text-white bg-transparent"
           >
             Criar Conta
           </button>
@@ -137,7 +151,7 @@ export const Home = () => {
               }}
             />
             <input
-              className="w-72 h-10 mb-7"
+              className="w-72 h-10 mb-1"
               type="password"
               placeholder="Confirme sua senha"
               value={confirmPassword}
@@ -145,6 +159,9 @@ export const Home = () => {
                 setConfirmPassword(e.target.value);
               }}
             />
+            <p className="w-72 text-red-700 mb-5 text-center">
+              {inputErrorMessage}
+            </p>
           </div>
 
           <button className=" w-72 h-10 bg-purple-800 rounded text-white">
