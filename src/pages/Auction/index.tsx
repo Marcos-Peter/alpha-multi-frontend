@@ -20,7 +20,7 @@ export const Auction = () => {
 
   const auctionID = window.location.pathname.split('/').pop() as string;
   const websocket = new WebSocket(
-    `ws://localhost:8080/ws?auctionName=${auctionID}`,
+    `ws://localhost:8080/ws?auctionID=${auctionID}`,
   );
   const [loading, setLoading] = useState(false);
 

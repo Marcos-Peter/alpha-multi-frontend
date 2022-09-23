@@ -8,6 +8,15 @@ interface PropsType {
   actualBid: number;
 }
 
+function scrollToBottom() {
+  const el = document.getElementById('messages');
+  if (el) {
+    setTimeout(() => {
+      el.scrollTop = el.scrollHeight;
+    }, 100);
+  }
+}
+
 export const AuctionChat = ({ content, actualBid }: PropsType) => {
   const message = content.map((messageItem, index) => {
     scrollToBottom();
@@ -20,15 +29,6 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
       </div>
     );
   });
-
-  function scrollToBottom() {
-    const el = document.getElementById('messages');
-    if (el) {
-      setTimeout(() => {
-        el.scrollTop = el.scrollHeight;
-      }, 100);
-    }
-  }
 
   return (
     <>

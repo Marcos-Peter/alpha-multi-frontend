@@ -1,46 +1,64 @@
-import { InputSubMessage, ReferenceInputSubMessageType } from './InputSubMessage';
 import { useRef, useState } from 'react';
+import {
+  InputSubMessage,
+  ReferenceInputSubMessageType,
+} from './InputSubMessage';
 import { Input } from './Input';
 import { InputBox } from './InputBox';
 import { InputReferenceType } from './InputReferenceType';
 
-interface PropTypes
-{
-    className?: string;
-    placeholder?: string;
-    reference?: React.MutableRefObject<InputReferenceType>;
+interface PropTypes {
+  className?: string;
+  placeholder?: string;
+  reference?: React.MutableRefObject<InputReferenceType>;
 }
 
-function PasswordInput (props: PropTypes)
-{
-    const maxPasswordLength = 10;
+function PasswordInput(props: PropTypes) {
+  const maxPasswordLength = 10;
 
-    const [ value, setValue ] = useState('');
-    const inputSubMessageRef = useRef({} as ReferenceInputSubMessageType);
+  const [value, setValue] = useState('');
+  const inputSubMessageRef = useRef({} as ReferenceInputSubMessageType);
 
-    function passwordInputOnChange (event: React.ChangeEvent<HTMLInputElement>)
-    {
-        setValue(event.target.value);
-    }
+  function passwordInputOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setValue(event.target.value);
+  }
 
-    function isPasswordValid ()
-    {
-        const condition = (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%¨&*?])[A-Za-z\d!@#$%¨&*?]{8,10}$/).test(value);
+  function isPasswordValid() {
+    const condition =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%¨&*?])[A-Za-z\d!@#$%¨&*?]{8,10}$/.test(
+        value,
+      );
 
-        if (condition) inputSubMessageRef.current.setNormalSubMessage('');
-        else inputSubMessageRef.current.setErrorSubMessage('Senha deve possuir de 8 a 10 caracteres, começando por letra maiúscula, conter pelo menos um número e um caracter especial.');
+    if (condition) inputSubMessageRef.current.setNormalSubMessage('');
+    else
+      inputSubMessageRef.current.setErrorSubMessage(
+        'Senha deve possuir de 8 a 10 caracteres, começando por letra maiúscula, conter pelo menos um número e um caracter especial.',
+      );
 
-        return condition;
-    }
+    return condition;
+  }
 
-    if (props?.reference) props.reference.current = { value, isValid: isPasswordValid, setValue, inputSubMessageRef };
+  if (props?.reference)
+    // eslint-disable-next-line no-param-reassign
+    props.reference.current = {
+      value,
+      isValid: isPasswordValid,
+      setValue,
+      inputSubMessageRef,
+    };
 
-    return (
-        <InputBox className={`${props?.className ? props.className : ''}`}>
-            <Input type="password" initialValue={value} maxLength={maxPasswordLength} placeholder={props.placeholder ? props.placeholder : 'Digite sua Senha'} InputOnChange={passwordInputOnChange} />
-            <InputSubMessage reference={inputSubMessageRef} />
-        </InputBox>
-    );
+  return (
+    <InputBox className={`${props?.className ? props.className : ''}`}>
+      <Input
+        type="password"
+        initialValue={value}
+        maxLength={maxPasswordLength}
+        placeholder={props.placeholder ? props.placeholder : 'Digite sua Senha'}
+        InputOnChange={passwordInputOnChange}
+      />
+      <InputSubMessage reference={inputSubMessageRef} />
+    </InputBox>
+  );
 }
 
 export { PasswordInput };

@@ -106,7 +106,7 @@ export const AuctionBid = (props: PropTypes) => {
                   if (Number(bid.split('R$ ')[1]) > actualBid) {
                     props.websocket.send(
                       JSON.stringify({
-                        auctionName: props.auctionID,
+                        auctionID: props.auctionID,
                         username: userInfo.userLogged,
                         message: bid,
                       }),
