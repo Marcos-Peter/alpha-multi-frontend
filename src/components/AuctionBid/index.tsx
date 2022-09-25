@@ -120,6 +120,7 @@ export const AuctionBid = (props: PropTypes) => {
               onClick={() => {
                 if (bid) {
                   if (Number(bid.split('R$ ')[1]) > actualBid) {
+                    
                     props.websocket.send(
                       JSON.stringify({
                         auctionID: props.auctionID,

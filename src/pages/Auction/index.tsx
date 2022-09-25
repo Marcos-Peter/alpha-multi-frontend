@@ -37,20 +37,20 @@ export const Auction = () => {
 
   const auctionID = window.location.pathname.split('/').pop() as string;
   const websocket = new WebSocket(
-    `ws://localhost:8080/ws?auctionID=${auctionID}&userName=${userInfo.userLogged}`,
+    `ws://localhost:8080/ws?auctionID=${auctionID}`,
   );
   const [auctionData, setAuctionData] = useState<any>(null);
   
-  
-
   useEffect(() => {
     const teste = auctionById(auctionID);
     teste.then((array) => {
       if (array) {
-        setAuctionData(array);
+        setAuctionData(array.data);
       }
- });
-},[]);
+  });
+  },[]);
+
+  console.log(auctionData);
     
   const [loading, setLoading] = useState(false);
 

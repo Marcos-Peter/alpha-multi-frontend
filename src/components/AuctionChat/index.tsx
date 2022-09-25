@@ -81,7 +81,7 @@ export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
               Valor Inicial R${auctionData.initial_price} / Atual:{' '}
               {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
             </p>
-            <p className="m-1">Leilão aberto às 14:35</p>
+            <p className="m-1">Leilão aberto às {auctionData.open_at}</p>
           </div>
         </div>
       </div>
