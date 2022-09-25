@@ -1,4 +1,6 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { getAuctionData } from '../../apiCalls/auction/getAuctionData';
+import { auctionById } from '../../apiCalls/auctionById';
 import { AuctionBid, ContentReference } from '../../components/AuctionBid';
 import Navbar from '../../components/Navbar';
 import { PulseCards } from '../../components/PulseCards';
@@ -15,6 +17,31 @@ import { UserDataContext } from '../../providers/UserDataProvider';
  */
 
 // Pegar Id na url: <h1>{`Auction:${window.location.pathname}`}</h1>
+
+interface RespAuctionType {
+  auction_id: string;
+  winner_id: string | null;
+  name: string;
+  description: string;
+  photo: string;
+  initial_price: string;
+  final_price: string | null;
+  close_at: string;
+  open_at: string;
+  created_at: string;
+  updated_at: string | null;
+  closed_at: string | null;
+}
+
+interface AuctionDataLog {
+  success: boolean;
+  code: number;
+  data: {
+    chatLog: string[];
+    numberOfClientsConnected: number;
+  };
+}
+
 export const Auction = () => {
   const userInfo = useContext(UserDataContext);
 
@@ -22,16 +49,38 @@ export const Auction = () => {
   const websocket = new WebSocket(
     `ws://localhost:8080/ws?auctionID=${auctionID}`,
   );
+  const [auctionData, setAuctionData] = useState<RespAuctionType>();
+
   const [loading, setLoading] = useState(false);
 
   const auctionBidRef = useRef({} as ContentReference);
 
   websocket.addEventListener('message', (event) => {
-    auctionBidRef.current.setContent([
-      ...auctionBidRef.current.content,
-      event.data as string,
-    ]);
+    console.log(event.data);
+    // const a: string[] = auctionBidRef.current;
+    // const novaArr = a.filter((este, i) => arr.indexOf(este) === i);
+    const teste = [...auctionBidRef.current.content, event.data as string];
+    auctionBidRef.current.setContent([...new Set(teste)]);
   });
+
+  useEffect(() => {
+    const teste = auctionById(auctionID);
+    teste.then((array) => {
+      if (array) {
+        setAuctionData(array.data);
+        const teste2 = getAuctionData(array.data.name);
+        teste2.then((data: AuctionDataLog) => {
+          if (data) {
+            console.log(data.data.chatLog);
+            auctionBidRef.current.setContent([
+              ...data.data.chatLog,
+              ...auctionBidRef.current.content,
+            ]);
+          }
+        });
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -59,11 +108,14 @@ export const Auction = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center bg-[#1F1F35] p-10 mb-10 rounded-md min-w-2/3 min-h-5/6">
-                <AuctionBid
-                  reference={auctionBidRef}
-                  auctionID={auctionID}
-                  websocket={websocket}
-                />
+                {auctionData && (
+                  <AuctionBid
+                    reference={auctionBidRef}
+                    auctionID={auctionID}
+                    websocket={websocket}
+                    auctionData={auctionData}
+                  />
+                )}
               </div>
             </div>
           )}

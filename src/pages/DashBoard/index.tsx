@@ -5,6 +5,7 @@ import { PulseCards } from '../../components/PulseCards';
 import Navbar from '../../components/Navbar';
 import { UserDataContext } from '../../providers/UserDataProvider';
 import { getAllAuctions } from '../../apiCalls/auction/getAllAuctions';
+import { ProfileCard } from '../../components/ProfileCard';
 
 /**
  * Archive: src/pages/Dashboard/index.tsx
@@ -23,7 +24,7 @@ interface RespAuctionType {
   photo: string;
   initial_price: string;
   final_price: string | null;
-  duration: number;
+  close_at: string;
   open_at: string;
   created_at: string;
   updated_at: string | null;
@@ -42,14 +43,11 @@ export const DashBoard = () => {
   >([]);
 
   const cards = arrayCardsFiltered.map((card, index) => {
-    return (
-      <Card
-        key={index}
-        image={card.photo}
-        title={card.name}
-        id={card.auction_id}
-      />
-    );
+    // console.log(new Date() < new Date(card.close_at), card.name);
+    if (new Date() < new Date(card.close_at)) {
+      return <Card key={index} auction={card} />;
+    }
+    return null;
   });
 
   const arrayCards = async () => {
@@ -104,7 +102,7 @@ export const DashBoard = () => {
         }
       });
     }
-  }, [modal, cards]);
+  }, []);
 
   return (
     <div>
@@ -150,7 +148,6 @@ export const DashBoard = () => {
                   <div className="bg-white w-10 h-10 rounded-full mr-10"></div>
                 </div>
               </div>
-
               <div className="ml-16 grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-center bg-[#1F1F35] p-10 mb-7 rounded-3xl w-72 sm:w-[500px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1300px] min-h-5/6 overflow-auto">
                 {cards}
               </div>

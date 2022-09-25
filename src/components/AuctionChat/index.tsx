@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { currencyMask } from '../../masks/currencyMask';
 import { inputMask } from '../../masks/inputMask';
 import { Countdown } from '../Countdown/Countdown';
@@ -6,6 +6,23 @@ import { Countdown } from '../Countdown/Countdown';
 interface PropsType {
   content: string[];
   actualBid: number;
+  auctionData: RespAuctionType;
+  setFinish: (bool: boolean) => void;
+}
+
+interface RespAuctionType {
+  auction_id: string;
+  winner_id: string | null;
+  name: string;
+  description: string;
+  photo: string;
+  initial_price: string;
+  final_price: string | null;
+  close_at: string;
+  open_at: string;
+  created_at: string;
+  updated_at: string | null;
+  closed_at: string | null;
 }
 
 function scrollToBottom() {
@@ -17,7 +34,13 @@ function scrollToBottom() {
   }
 }
 
-export const AuctionChat = ({ content, actualBid }: PropsType) => {
+export const AuctionChat = ({
+  content,
+  actualBid,
+  auctionData,
+  setFinish,
+}: PropsType) => {
+  // const [auction, setAuction] = useState<RespAuctionType>(JSON.parse(auctionData) as RespAuctionType);
   const message = content.map((messageItem, index) => {
     scrollToBottom();
     return (
@@ -30,6 +53,28 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
     );
   });
 
+  function diferenceSeconds(data1: Date, data2: Date) {
+    const day = data1;
+    const today = data2;
+    let dif =
+      Date.UTC(
+        data1.getFullYear(),
+        data1.getMonth(),
+        data1.getDate(),
+        0,
+        0,
+        0,
+      ) -
+      Date.UTC(data2.getFullYear(), data2.getMonth(), data2.getDate(), 0, 0, 0);
+    dif = Math.abs(dif / 1000 / 60 / 60);
+    const difH = Math.abs(today.getHours() - day.getHours());
+    const difM = Math.abs(today.getMinutes() - day.getMinutes());
+    const difS = Math.abs(today.getSeconds() - day.getSeconds());
+
+    return (dif * 24 + difH) * 3600 + difM * 60 + difS;
+  }
+
+  // console.log(auction);
   return (
     <>
       <div className="flex flex-col justify-start bg-white w-[418px] h-[395px] rounded-3xl ">
@@ -42,7 +87,14 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
             <div className="flex">
               <div className="ml-8 bg-clock-time bg-no-repeat h-5 w-5"></div>
               <p className="w-25 mb-2 text-sm">
-                <Countdown duration={120} /> para terminar
+                <Countdown
+                  duration={diferenceSeconds(
+                    new Date(auctionData.close_at),
+                    new Date(),
+                  )}
+                  setFinish={setFinish}
+                />
+                para terminar
               </p>
             </div>
           </div>
@@ -60,10 +112,13 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
           </div>
           <div className="flex flex-col items-center">
             <p className="m-1">
-              Valor Inicial R$100,56 / Atual:{' '}
+              Valor Inicial R${auctionData.initial_price} / Atual:{' '}
               {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
             </p>
-            <p className="m-1">Leilão aberto às 14:35</p>
+            <p className="m-1">
+              Leilão aberto às
+              {new Date(auctionData.open_at).toTimeString().split(' ')[0]}
+            </p>
           </div>
         </div>
       </div>
