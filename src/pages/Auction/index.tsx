@@ -58,12 +58,8 @@ export const Auction = () => {
     console.log(event.data);
     // const a: string[] = auctionBidRef.current;
     // const novaArr = a.filter((este, i) => arr.indexOf(este) === i);
-
-    auctionBidRef.current.setContent([
-      ...auctionBidRef.current.content,
-      event.data as string,
-    ]);
-    console.log('aaa');
+    const teste = [...auctionBidRef.current.content, event.data as string];
+    auctionBidRef.current.setContent([...new Set(teste)]);
   });
 
   return (
