@@ -62,7 +62,6 @@ export const AuctionChat = ({
     return seconds;
   }
 
-  // console.log(auction);
   return (
     <>
       <div className="flex flex-col justify-start bg-white w-[418px] h-[395px] rounded-3xl ">
