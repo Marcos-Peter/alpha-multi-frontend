@@ -9,10 +9,26 @@ interface ContentReference {
   setContent: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+interface RespAuctionType {
+  auction_id: string;
+  winner_id: string | null;
+  name: string;
+  description: string;
+  photo: string;
+  initial_price: string;
+  final_price: string | null;
+  close_at: string;
+  open_at: string;
+  created_at: string;
+  updated_at: string | null;
+  closed_at: string | null;
+}
+
 interface PropTypes {
   auctionID: string;
   websocket: WebSocket;
   reference: React.MutableRefObject<ContentReference>;
+  auctionData: RespAuctionType;
 }
 interface LastBidType {
   name: string;
@@ -49,7 +65,7 @@ export const AuctionBid = (props: PropTypes) => {
   }, [content]);
   return (
     <>
-      <AuctionChat content={content} actualBid={actualBid} />
+      <AuctionChat content={content} actualBid={actualBid} auctionData={props.auctionData} />
 
       <div className="flex flex-col mt-5 bg-white w-[518px] h-[210px] rounded-3xl items-center ">
         <div className="flex flex-col bg-gray-200 w-[458px] h-[180px] mt-3 mb-5 rounded-xl">

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { currencyMask } from '../../masks/currencyMask';
 import { inputMask } from '../../masks/inputMask';
 import { Countdown } from '../Countdown/Countdown';
@@ -6,6 +6,22 @@ import { Countdown } from '../Countdown/Countdown';
 interface PropsType {
   content: string[];
   actualBid: number;
+  auctionData: RespAuctionType;
+}
+
+interface RespAuctionType {
+  auction_id: string;
+  winner_id: string | null;
+  name: string;
+  description: string;
+  photo: string;
+  initial_price: string;
+  final_price: string | null;
+  close_at: string;
+  open_at: string;
+  created_at: string;
+  updated_at: string | null;
+  closed_at: string | null;
 }
 
 function scrollToBottom() {
@@ -17,7 +33,8 @@ function scrollToBottom() {
   }
 }
 
-export const AuctionChat = ({ content, actualBid }: PropsType) => {
+export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
+  //const [auction, setAuction] = useState<RespAuctionType>(JSON.parse(auctionData) as RespAuctionType);
   const message = content.map((messageItem, index) => {
     scrollToBottom();
     return (
@@ -30,6 +47,7 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
     );
   });
 
+  //console.log(auction);
   return (
     <>
       <div className="flex flex-col justify-start bg-white w-[418px] h-[395px] rounded-3xl ">
@@ -60,7 +78,7 @@ export const AuctionChat = ({ content, actualBid }: PropsType) => {
           </div>
           <div className="flex flex-col items-center">
             <p className="m-1">
-              Valor Inicial R$100,56 / Atual:{' '}
+              Valor Inicial R${auctionData.initial_price} / Atual:{' '}
               {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
             </p>
             <p className="m-1">Leilão aberto às 14:35</p>

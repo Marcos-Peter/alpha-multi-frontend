@@ -1,4 +1,5 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { auctionById } from '../../apiCalls/auctionById';
 import { AuctionBid, ContentReference } from '../../components/AuctionBid';
 import Navbar from '../../components/Navbar';
 import { PulseCards } from '../../components/PulseCards';
@@ -15,13 +16,42 @@ import { UserDataContext } from '../../providers/UserDataProvider';
  */
 
 // Pegar Id na url: <h1>{`Auction:${window.location.pathname}`}</h1>
+
+interface RespAuctionType {
+  auction_id: string;
+  winner_id: string | null;
+  name: string;
+  description: string;
+  photo: string;
+  initial_price: string;
+  final_price: string | null;
+  close_at: string;
+  open_at: string;
+  created_at: string;
+  updated_at: string | null;
+  closed_at: string | null;
+}
+
 export const Auction = () => {
   const userInfo = useContext(UserDataContext);
 
   const auctionID = window.location.pathname.split('/').pop() as string;
   const websocket = new WebSocket(
-    `ws://localhost:8080/ws?auctionID=${auctionID}`,
+    `ws://localhost:8080/ws?auctionID=${auctionID}&userName=${userInfo.userLogged}`,
   );
+  const [auctionData, setAuctionData] = useState<any>(null);
+  
+  
+
+  useEffect(() => {
+    const teste = auctionById(auctionID);
+    teste.then((array) => {
+      if (array) {
+        setAuctionData(array);
+      }
+ });
+},[]);
+    
   const [loading, setLoading] = useState(false);
 
   const auctionBidRef = useRef({} as ContentReference);
@@ -59,11 +89,12 @@ export const Auction = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center bg-[#1F1F35] p-10 mb-10 rounded-md min-w-2/3 min-h-5/6">
-                <AuctionBid
+              {auctionData &&        <AuctionBid
                   reference={auctionBidRef}
                   auctionID={auctionID}
                   websocket={websocket}
-                />
+                  auctionData={auctionData}
+                />}
               </div>
             </div>
           )}
