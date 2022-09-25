@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { getAuctionData } from '../../apiCalls/auction/getAuctionData';
 import { auctionById } from '../../apiCalls/auctionById';
 import { AuctionBid, ContentReference } from '../../components/AuctionBid';
 import Navbar from '../../components/Navbar';
@@ -32,6 +33,15 @@ interface RespAuctionType {
   closed_at: string | null;
 }
 
+interface AuctionDataLog {
+  success: boolean;
+  code: number;
+  data: {
+    chatLog: string[];
+    numberOfClientsConnected: number;
+  };
+}
+
 export const Auction = () => {
   const userInfo = useContext(UserDataContext);
 
@@ -39,16 +49,7 @@ export const Auction = () => {
   const websocket = new WebSocket(
     `ws://localhost:8080/ws?auctionID=${auctionID}`,
   );
-  const [auctionData, setAuctionData] = useState<any>(null);
-
-  useEffect(() => {
-    const teste = auctionById(auctionID);
-    teste.then((array) => {
-      if (array) {
-        setAuctionData(array.data);
-      }
-    });
-  }, []);
+  const [auctionData, setAuctionData] = useState<RespAuctionType>();
 
   const [loading, setLoading] = useState(false);
 
@@ -61,6 +62,25 @@ export const Auction = () => {
     const teste = [...auctionBidRef.current.content, event.data as string];
     auctionBidRef.current.setContent([...new Set(teste)]);
   });
+
+  useEffect(() => {
+    const teste = auctionById(auctionID);
+    teste.then((array) => {
+      if (array) {
+        setAuctionData(array.data);
+        const teste2 = getAuctionData(array.data.name);
+        teste2.then((data: AuctionDataLog) => {
+          if (data) {
+            console.log(data.data.chatLog);
+            auctionBidRef.current.setContent([
+              ...data.data.chatLog,
+              ...auctionBidRef.current.content,
+            ]);
+          }
+        });
+      }
+    });
+  }, []);
 
   return (
     <>

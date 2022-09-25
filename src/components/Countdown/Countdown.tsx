@@ -62,7 +62,7 @@ export const Countdown = ({ duration }: PropType) => {
 
   return (
     <>
-      <h1>{timer}</h1>
+      <p>{timer}</p>
     </>
   );
 };

@@ -55,13 +55,20 @@ export const AuctionBid = (props: PropTypes) => {
       setBid(`R$ ${inputMask(parseFloat(result.toString()).toFixed(2))}`);
     }
   }
-
+  function getNameAndLastBid(position: number) {
+    const name = content[content.length - position].split('d')[0].trim();
+    const lastbid = content[content.length - position].split('R$ ')[1];
+    setActualBid(Number(lastbid));
+    setLastBid({ name, bid: lastbid });
+  }
   useEffect(() => {
     if (content.length > 1) {
-      const name = content[content.length - 1].split('d')[0].trim();
       const lastbid = content[content.length - 1].split('R$ ')[1];
-      setActualBid(Number(lastbid));
-      setLastBid({ name, bid: lastbid });
+      if (lastbid === undefined) {
+        getNameAndLastBid(2);
+      } else {
+        getNameAndLastBid(1);
+      }
     }
   }, [content]);
   return (
@@ -124,17 +131,22 @@ export const AuctionBid = (props: PropTypes) => {
             <div
               onClick={() => {
                 if (bid) {
-                  if (Number(bid.split('R$ ')[1]) > actualBid) {
-                    props.websocket.send(
-                      JSON.stringify({
-                        auctionID: props.auctionID,
-                        username: userInfo.userLogged,
-                        message: bid,
-                      }),
-                    );
+                  if (lastBid.name !== userInfo.userLogged) {
+                    if (Number(bid.split('R$ ')[1]) > actualBid) {
+                      props.websocket.send(
+                        JSON.stringify({
+                          auctionID: props.auctionID,
+                          username: userInfo.userLogged,
+                          message: bid,
+                        }),
+                      );
+                    } else {
+                      alert('Valor precisa ser maior que o atual');
+                    }
                   } else {
-                    alert('Valor precisa ser maior que o atual');
+                    alert('aguarde a sua vez');
                   }
+
                   setBid('');
                 }
               }}
