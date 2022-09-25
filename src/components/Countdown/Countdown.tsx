@@ -2,13 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 
 interface PropType {
   duration: number;
+  setFinish: (bool: boolean) => void;
 }
 
-export const Countdown = ({ duration }: PropType) => {
+export const Countdown = ({ duration, setFinish }: PropType) => {
   const intervalRef = useRef(0);
 
   const [timer, setTimer] = useState('00:00:00');
-
+  useEffect(() => {
+    if (timer === '00:00:01') {
+      setFinish(true);
+    }
+  }, [timer]);
   const getRemainingTime = (endTime: string | number | Date) => {
     const total =
       Date.parse(endTime.toString()) - Date.parse(new Date().toString());
@@ -61,8 +66,8 @@ export const Countdown = ({ duration }: PropType) => {
   }, []);
 
   return (
-    <div>
-      <h1>{timer}</h1>
-    </div>
+    <>
+      <p>{timer}</p>
+    </>
   );
 };

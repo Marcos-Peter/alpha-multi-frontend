@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { currencyMask } from '../../masks/currencyMask';
 import { inputMask } from '../../masks/inputMask';
 import { UserDataContext } from '../../providers/UserDataProvider';
 import { AuctionChat } from '../AuctionChat';
@@ -37,9 +36,20 @@ interface LastBidType {
 export const AuctionBid = (props: PropTypes) => {
   const [content, setContent] = useState<string[]>(['Você entrou na sala.']);
   const [bid, setBid] = useState<string>('');
-  const [actualBid, setActualBid] = useState<number>(100.558);
+  const [actualBid, setActualBid] = useState<number>(
+    Number(props.auctionData.initial_price),
+  );
   const userInfo = useContext(UserDataContext);
   const [lastBid, setLastBid] = useState<LastBidType>({ name: '', bid: '' });
+
+  const [finish, setFinish] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (finish) {
+      alert(`Acabou: vencedor ${lastBid.name}`);
+    }
+  }, [finish]);
+
   // eslint-disable-next-line no-param-reassign
   props.reference.current = { content, setContent };
 
@@ -54,18 +64,30 @@ export const AuctionBid = (props: PropTypes) => {
       setBid(`R$ ${inputMask(parseFloat(result.toString()).toFixed(2))}`);
     }
   }
-
+  function getNameAndLastBid(position: number) {
+    const name = content[content.length - position].split('d')[0].trim();
+    const lastbid = content[content.length - position].split('R$ ')[1];
+    setActualBid(Number(lastbid));
+    setLastBid({ name, bid: lastbid });
+  }
   useEffect(() => {
     if (content.length > 1) {
-      const name = content[content.length - 1].split('d')[0].trim();
       const lastbid = content[content.length - 1].split('R$ ')[1];
-      setActualBid(Number(lastbid));
-      setLastBid({ name, bid: lastbid });
+      if (lastbid === undefined) {
+        getNameAndLastBid(2);
+      } else {
+        getNameAndLastBid(1);
+      }
     }
   }, [content]);
   return (
     <>
-      <AuctionChat content={content} actualBid={actualBid} auctionData={props.auctionData} />
+      <AuctionChat
+        content={content}
+        actualBid={actualBid}
+        auctionData={props.auctionData}
+        setFinish={setFinish}
+      />
 
       <div className="flex flex-col mt-5 bg-white w-[518px] h-[210px] rounded-3xl items-center ">
         <div className="flex flex-col bg-gray-200 w-[458px] h-[180px] mt-3 mb-5 rounded-xl">
@@ -119,18 +141,22 @@ export const AuctionBid = (props: PropTypes) => {
             <div
               onClick={() => {
                 if (bid) {
-                  if (Number(bid.split('R$ ')[1]) > actualBid) {
-                    
-                    props.websocket.send(
-                      JSON.stringify({
-                        auctionID: props.auctionID,
-                        username: userInfo.userLogged,
-                        message: bid,
-                      }),
-                    );
+                  if (lastBid.name !== userInfo.userLogged) {
+                    if (Number(bid.split('R$ ')[1]) > actualBid) {
+                      props.websocket.send(
+                        JSON.stringify({
+                          auctionID: props.auctionID,
+                          username: userInfo.userLogged,
+                          message: bid,
+                        }),
+                      );
+                    } else {
+                      alert('Valor precisa ser maior que o atual');
+                    }
                   } else {
-                    alert('Valor precisa ser maior que o atual');
+                    alert('aguarde a sua vez');
                   }
+
                   setBid('');
                 }
               }}

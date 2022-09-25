@@ -44,13 +44,11 @@ export const DashBoard = () => {
   >([]);
 
   const cards = arrayCardsFiltered.map((card, index) => {
-    return (
-      <Card
-        key={index}
-        auction = {card}
-
-      />
-    );
+    // console.log(new Date() < new Date(card.close_at), card.name);
+    if (new Date() < new Date(card.close_at)) {
+      return <Card key={index} auction={card} />;
+    }
+    return null;
   });
 
   const arrayCards = async () => {
@@ -105,7 +103,7 @@ export const DashBoard = () => {
         }
       });
     }
-  }, [modal, cards]);
+  }, []);
 
   return (
     <div>
