@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { currencyMask } from '../../masks/currencyMask';
 import { inputMask } from '../../masks/inputMask';
 import { UserDataContext } from '../../providers/UserDataProvider';
 import { AuctionChat } from '../AuctionChat';
@@ -37,7 +36,9 @@ interface LastBidType {
 export const AuctionBid = (props: PropTypes) => {
   const [content, setContent] = useState<string[]>(['Você entrou na sala.']);
   const [bid, setBid] = useState<string>('');
-  const [actualBid, setActualBid] = useState<number>(100.558);
+  const [actualBid, setActualBid] = useState<number>(
+    Number(props.auctionData.initial_price),
+  );
   const userInfo = useContext(UserDataContext);
   const [lastBid, setLastBid] = useState<LastBidType>({ name: '', bid: '' });
   // eslint-disable-next-line no-param-reassign
@@ -65,7 +66,11 @@ export const AuctionBid = (props: PropTypes) => {
   }, [content]);
   return (
     <>
-      <AuctionChat content={content} actualBid={actualBid} auctionData={props.auctionData} />
+      <AuctionChat
+        content={content}
+        actualBid={actualBid}
+        auctionData={props.auctionData}
+      />
 
       <div className="flex flex-col mt-5 bg-white w-[518px] h-[210px] rounded-3xl items-center ">
         <div className="flex flex-col bg-gray-200 w-[458px] h-[180px] mt-3 mb-5 rounded-xl">
@@ -120,7 +125,6 @@ export const AuctionBid = (props: PropTypes) => {
               onClick={() => {
                 if (bid) {
                   if (Number(bid.split('R$ ')[1]) > actualBid) {
-                    
                     props.websocket.send(
                       JSON.stringify({
                         auctionID: props.auctionID,

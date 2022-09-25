@@ -40,27 +40,30 @@ export const Auction = () => {
     `ws://localhost:8080/ws?auctionID=${auctionID}`,
   );
   const [auctionData, setAuctionData] = useState<any>(null);
-  
+
   useEffect(() => {
     const teste = auctionById(auctionID);
     teste.then((array) => {
       if (array) {
         setAuctionData(array.data);
       }
-  });
-  },[]);
+    });
+  }, []);
 
-  console.log(auctionData);
-    
   const [loading, setLoading] = useState(false);
 
   const auctionBidRef = useRef({} as ContentReference);
 
   websocket.addEventListener('message', (event) => {
+    console.log(event.data);
+    // const a: string[] = auctionBidRef.current;
+    // const novaArr = a.filter((este, i) => arr.indexOf(este) === i);
+
     auctionBidRef.current.setContent([
       ...auctionBidRef.current.content,
       event.data as string,
     ]);
+    console.log('aaa');
   });
 
   return (
@@ -89,12 +92,14 @@ export const Auction = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center bg-[#1F1F35] p-10 mb-10 rounded-md min-w-2/3 min-h-5/6">
-              {auctionData &&        <AuctionBid
-                  reference={auctionBidRef}
-                  auctionID={auctionID}
-                  websocket={websocket}
-                  auctionData={auctionData}
-                />}
+                {auctionData && (
+                  <AuctionBid
+                    reference={auctionBidRef}
+                    auctionID={auctionID}
+                    websocket={websocket}
+                    auctionData={auctionData}
+                  />
+                )}
               </div>
             </div>
           )}

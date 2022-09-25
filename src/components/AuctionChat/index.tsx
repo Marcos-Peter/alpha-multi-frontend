@@ -34,7 +34,7 @@ function scrollToBottom() {
 }
 
 export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
-  //const [auction, setAuction] = useState<RespAuctionType>(JSON.parse(auctionData) as RespAuctionType);
+  // const [auction, setAuction] = useState<RespAuctionType>(JSON.parse(auctionData) as RespAuctionType);
   const message = content.map((messageItem, index) => {
     scrollToBottom();
     return (
@@ -47,7 +47,28 @@ export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
     );
   });
 
-  //console.log(auction);
+  function diferenceSeconds(data1: Date, data2: Date) {
+    const day = data1;
+    const today = data2;
+    let dif =
+      Date.UTC(
+        data1.getFullYear(),
+        data1.getMonth(),
+        data1.getDate(),
+        0,
+        0,
+        0,
+      ) -
+      Date.UTC(data2.getFullYear(), data2.getMonth(), data2.getDate(), 0, 0, 0);
+    dif = Math.abs(dif / 1000 / 60 / 60);
+    const difH = Math.abs(today.getHours() - day.getHours());
+    const difM = Math.abs(today.getMinutes() - day.getMinutes());
+    const difS = Math.abs(today.getSeconds() - day.getSeconds());
+
+    return (dif * 24 + difH) * 3600 - difM * 60 - difS;
+  }
+
+  // console.log(auction);
   return (
     <>
       <div className="flex flex-col justify-start bg-white w-[418px] h-[395px] rounded-3xl ">
@@ -60,7 +81,13 @@ export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
             <div className="flex">
               <div className="ml-8 bg-clock-time bg-no-repeat h-5 w-5"></div>
               <p className="w-25 mb-2 text-sm">
-                <Countdown duration={120} /> para terminar
+                <Countdown
+                  duration={diferenceSeconds(
+                    new Date(auctionData.close_at),
+                    new Date(),
+                  )}
+                />
+                para terminar
               </p>
             </div>
           </div>
@@ -81,7 +108,10 @@ export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
               Valor Inicial R${auctionData.initial_price} / Atual:{' '}
               {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
             </p>
-            <p className="m-1">Leilão aberto às {auctionData.open_at}</p>
+            <p className="m-1">
+              Leilão aberto às
+              {new Date(auctionData.open_at).toTimeString().split(' ')[0]}
+            </p>
           </div>
         </div>
       </div>
