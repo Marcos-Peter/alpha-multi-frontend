@@ -47,7 +47,7 @@ export const Auction = () => {
 
   const auctionID = window.location.pathname.split('/').pop() as string;
   const websocket = new WebSocket(
-    `ws://localhost:8080/ws?auctionID=${auctionID}`,
+    `ws://localhost:8080/ws?auctionID=${auctionID}&userName=${userInfo.userLogged}`,
   );
   const [auctionData, setAuctionData] = useState<RespAuctionType>();
 
@@ -60,17 +60,18 @@ export const Auction = () => {
     // const a: string[] = auctionBidRef.current;
     // const novaArr = a.filter((este, i) => arr.indexOf(este) === i);
     const teste = [...auctionBidRef.current.content, event.data as string];
-    auctionBidRef.current.setContent([...new Set(teste)]);
+    // auctionBidRef.current.setContent([...new Set(teste)]);
+    auctionBidRef.current.setContent([...teste]);
   });
 
   useEffect(() => {
-    const teste = auctionById(auctionID);
-    teste.then((array) => {
-      if (array) {
-        setAuctionData(array.data);
-        const teste2 = getAuctionData(array.data.name);
-        teste2.then((data: AuctionDataLog) => {
-          if (data) {
+    const result = auctionById(auctionID);
+    result.then((response) => {
+      if (response.success) {
+        setAuctionData(response.data);
+        const teste2 = getAuctionData(response.data.name);
+        teste2.then((data) => {
+          if (data.success) {
             console.log(data.data.chatLog);
             auctionBidRef.current.setContent([
               ...data.data.chatLog,
