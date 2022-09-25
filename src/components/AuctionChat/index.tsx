@@ -54,24 +54,12 @@ export const AuctionChat = ({
   });
 
   function diferenceSeconds(data1: Date, data2: Date) {
-    const day = data1;
-    const today = data2;
-    let dif =
-      Date.UTC(
-        data1.getFullYear(),
-        data1.getMonth(),
-        data1.getDate(),
-        0,
-        0,
-        0,
-      ) -
-      Date.UTC(data2.getFullYear(), data2.getMonth(), data2.getDate(), 0, 0, 0);
-    dif = Math.abs(dif / 1000 / 60 / 60);
-    const difH = Math.abs(today.getHours() - day.getHours());
-    const difM = Math.abs(today.getMinutes() - day.getMinutes());
-    const difS = Math.abs(today.getSeconds() - day.getSeconds());
+    // const startDate = new Date();
 
-    return (dif * 24 + difH) * 3600 + difM * 60 + difS;
+    // const endDate = new Date('2022-09-25 18:30:00');
+    const seconds = (data2.getTime() - data1.getTime()) / 1000;
+
+    return seconds;
   }
 
   // console.log(auction);
@@ -89,8 +77,8 @@ export const AuctionChat = ({
               <p className="w-25 mb-2 text-sm">
                 <Countdown
                   duration={diferenceSeconds(
-                    new Date(auctionData.close_at),
                     new Date(),
+                    new Date(auctionData.close_at),
                   )}
                   setFinish={setFinish}
                 />
