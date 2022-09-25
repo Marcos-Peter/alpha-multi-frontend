@@ -7,6 +7,7 @@ interface PropsType {
   content: string[];
   actualBid: number;
   auctionData: RespAuctionType;
+  setFinish: (bool: boolean) => void;
 }
 
 interface RespAuctionType {
@@ -33,7 +34,12 @@ function scrollToBottom() {
   }
 }
 
-export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
+export const AuctionChat = ({
+  content,
+  actualBid,
+  auctionData,
+  setFinish,
+}: PropsType) => {
   // const [auction, setAuction] = useState<RespAuctionType>(JSON.parse(auctionData) as RespAuctionType);
   const message = content.map((messageItem, index) => {
     scrollToBottom();
@@ -65,7 +71,7 @@ export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
     const difM = Math.abs(today.getMinutes() - day.getMinutes());
     const difS = Math.abs(today.getSeconds() - day.getSeconds());
 
-    return (dif * 24 + difH) * 3600 - difM * 60 - difS;
+    return (dif * 24 + difH) * 3600 + difM * 60 + difS;
   }
 
   // console.log(auction);
@@ -86,6 +92,7 @@ export const AuctionChat = ({ content, actualBid, auctionData }: PropsType) => {
                     new Date(auctionData.close_at),
                     new Date(),
                   )}
+                  setFinish={setFinish}
                 />
                 para terminar
               </p>

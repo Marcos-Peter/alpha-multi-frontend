@@ -41,6 +41,15 @@ export const AuctionBid = (props: PropTypes) => {
   );
   const userInfo = useContext(UserDataContext);
   const [lastBid, setLastBid] = useState<LastBidType>({ name: '', bid: '' });
+
+  const [finish, setFinish] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (finish) {
+      alert(`Acabou: vencedor ${lastBid.name}`);
+    }
+  }, [finish]);
+
   // eslint-disable-next-line no-param-reassign
   props.reference.current = { content, setContent };
 
@@ -77,6 +86,7 @@ export const AuctionBid = (props: PropTypes) => {
         content={content}
         actualBid={actualBid}
         auctionData={props.auctionData}
+        setFinish={setFinish}
       />
 
       <div className="flex flex-col mt-5 bg-white w-[518px] h-[210px] rounded-3xl items-center ">
