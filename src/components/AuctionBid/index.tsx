@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
+import { isAuctionClosed } from '../../apiCalls/auction/isAuctionClosed';
 import { inputMask } from '../../masks/inputMask';
 import { UserDataContext } from '../../providers/UserDataProvider';
 import { AuctionChat } from '../AuctionChat';
+import { ModalMessage } from '../ModalMessage';
 
 interface ContentReference {
   content: string[];
@@ -43,10 +45,17 @@ export const AuctionBid = (props: PropTypes) => {
   const [lastBid, setLastBid] = useState<LastBidType>({ name: '', bid: '' });
 
   const [finish, setFinish] = useState<boolean>(false);
+  const [modalMessageEnd, setModalMessageEnd] = useState<boolean>(false);
+  const [modalWrongValue, setWrongValue] = useState<boolean>(false);
 
   useEffect(() => {
     if (finish) {
-      alert(`Acabou: vencedor ${lastBid.name}`);
+      const verifyState = isAuctionClosed(props.auctionData.name);
+      verifyState.then((resp) => {
+        if (resp.data) {
+          setModalMessageEnd(true);
+        }
+      });
     }
   }, [finish]);
 
@@ -82,6 +91,21 @@ export const AuctionBid = (props: PropTypes) => {
   }, [content]);
   return (
     <>
+      {modalMessageEnd && (
+        <ModalMessage
+          title="Fim do Leilão"
+          message={`Ganhador: ${lastBid.name} Valor: ${lastBid.bid}`}
+          endpoint="/dashboard"
+          setModal={setModalMessageEnd}
+        />
+      )}
+      {modalWrongValue && (
+        <ModalMessage
+          title="Valor Inválido!"
+          message={`Parece que você tentou dar um lance menor do que o valor atual, tente novamente! Dica: use nosso botões de porcentagem para facilitar seu novo lance`}
+          setModal={setWrongValue}
+        />
+      )}
       <AuctionChat
         content={content}
         actualBid={actualBid}
@@ -90,91 +114,91 @@ export const AuctionBid = (props: PropTypes) => {
       />
 
       <div className="flex flex-col mt-5 bg-white w-[518px] h-[210px] rounded-3xl items-center ">
-        <div className="flex flex-col bg-gray-200 w-[458px] h-[180px] mt-3 mb-5 rounded-xl">
-          <div className="flex ">
-            <div
-              onClick={() => bidByPercentage(`10%`)}
-              className="ml-6 m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
-            >
-              <p className="text-center text-sm">10%</p>
-            </div>
-            <div
-              onClick={() => bidByPercentage(`15%`)}
-              className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
-            >
-              <p className="text-center text-sm">15%</p>
-            </div>
-            <div
-              onClick={() => bidByPercentage(`20%`)}
-              className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
-            >
-              <p className="text-center text-sm">20%</p>
-            </div>
-            <div
-              onClick={() => bidByPercentage(`25%`)}
-              className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
-            >
-              <p className="text-center text-sm">25%</p>
-            </div>
-            <div
-              onClick={() => bidByPercentage(`30%`)}
-              className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
-            >
-              <p className="text-center text-sm">30%</p>
-            </div>
-            <div
-              onClick={() => alert(`${lastBid.name}  -  ${lastBid.bid}`)}
-              className="flex justify-center items-center m-[6px] mt-3 w-[114px] h-7 rounded border-2 bg-[#14181B] hover:cursor-pointer text-center hover:bg-gray-800"
-            >
-              <p className=" text-xs text-white">Lance Customizado</p>
-            </div>
+        {lastBid.name === userInfo.userLogged ? (
+          <div className="flex flex-col justify-center bg-gray-200 w-[458px] h-[180px] mt-3 mb-5 rounded-xl items-center">
+            <p>Aguarde o próximo lance.</p>
           </div>
-          <div className="flex">
-            <div className="flex justify-center items-center ml-6 mt-1 w-[288px] h-[50px] rounded-2xl border-2 border-[#BDBDBD]">
-              <input
-                type="text"
-                value={bid}
-                onChange={(e) => setBid(`R$ ${inputMask(e.target.value)}`)}
-                className="m-3 h-[40px] bg-gray-200 text-center text-xs text-gray-500 appearance-none border-none"
-              />
+        ) : (
+          <div className="flex flex-col bg-gray-200 w-[458px] h-[180px] mt-3 mb-5 rounded-xl">
+            <div className="flex ">
+              <div
+                onClick={() => bidByPercentage(`10%`)}
+                className="ml-6 m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
+              >
+                <p className="text-center text-sm">10%</p>
+              </div>
+              <div
+                onClick={() => bidByPercentage(`15%`)}
+                className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
+              >
+                <p className="text-center text-sm">15%</p>
+              </div>
+              <div
+                onClick={() => bidByPercentage(`20%`)}
+                className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
+              >
+                <p className="text-center text-sm">20%</p>
+              </div>
+              <div
+                onClick={() => bidByPercentage(`25%`)}
+                className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
+              >
+                <p className="text-center text-sm">25%</p>
+              </div>
+              <div
+                onClick={() => bidByPercentage(`30%`)}
+                className="m-[6px] mt-3 w-12 h-6 rounded border-2 border-[#BDBDBD] hover:cursor-pointer text-center hover:bg-gray-300"
+              >
+                <p className="text-center text-sm">30%</p>
+              </div>
             </div>
-            <div
-              onClick={() => {
-                if (bid) {
-                  if (lastBid.name !== userInfo.userLogged) {
-                    if (Number(bid.split('R$ ')[1]) > actualBid) {
-                      props.websocket.send(
-                        JSON.stringify({
-                          auctionID: props.auctionID,
-                          username: userInfo.userLogged,
-                          message: bid,
-                        }),
-                      );
+            <div className="flex">
+              <div className="flex justify-center items-center ml-6 mt-1 w-[288px] h-[50px] rounded-2xl border-2 border-[#BDBDBD]">
+                <input
+                  type="text"
+                  value={bid}
+                  onChange={(e) => setBid(`R$ ${inputMask(e.target.value)}`)}
+                  className="m-3 h-[40px] bg-gray-200 text-center text-xs text-gray-500 appearance-none border-none"
+                />
+              </div>
+              <div
+                onClick={() => {
+                  if (bid) {
+                    if (lastBid.name !== userInfo.userLogged) {
+                      if (Number(bid.split('R$ ')[1]) > actualBid) {
+                        props.websocket.send(
+                          JSON.stringify({
+                            auctionID: props.auctionID,
+                            username: userInfo.userLogged,
+                            message: bid,
+                          }),
+                        );
+                      } else {
+                        setWrongValue(true);
+                      }
                     } else {
-                      alert('Valor precisa ser maior que o atual');
+                      alert('aguarde a sua vez');
                     }
-                  } else {
-                    alert('aguarde a sua vez');
-                  }
 
-                  setBid('');
-                }
-              }}
-              placeholder="Digite um valor"
-              className="hover:cursor-pointer hover:bg-[#3752FE] bg-checkmark bg-no-repeat bg-center ml-3 m-1 w-[50px] h-[50px] rounded-2xl bg-[#3772FE]"
-            ></div>
+                    setBid('');
+                  }
+                }}
+                placeholder="Digite um valor"
+                className="hover:cursor-pointer hover:bg-[#3752FE] bg-checkmark bg-no-repeat bg-center ml-3 m-1 w-[50px] h-[50px] rounded-2xl bg-[#3772FE]"
+              ></div>
+              <div
+                onClick={() => setBid('')}
+                className="hover:cursor-pointer hover:bg-gray-400 bg-x-grey bg-no-repeat bg-center  ml-2 m-1 w-[50px] h-[50px] rounded-2xl border-2 border-[#BDBDBD]"
+              ></div>
+            </div>
             <div
-              onClick={() => setBid('')}
-              className="hover:cursor-pointer hover:bg-gray-400 bg-x-grey bg-no-repeat bg-center  ml-2 m-1 w-[50px] h-[50px] rounded-2xl border-2 border-[#BDBDBD]"
-            ></div>
+              onClick={() => bidByPercentage(`5%`)}
+              className="hover:cursor-pointer hover:bg-[#3E2F9A] flex justify-center items-center ml-6 mt-1 mb-2 w-[410px] h-[50px] rounded-2xl bg-[#3E3F7A]"
+            >
+              <p className="text-center text-lg text-white">Dar Lance de 5%</p>
+            </div>
           </div>
-          <div
-            onClick={() => bidByPercentage(`5%`)}
-            className="hover:cursor-pointer hover:bg-[#3E2F9A] flex justify-center items-center ml-6 mt-1 mb-2 w-[410px] h-[50px] rounded-2xl bg-[#3E3F7A]"
-          >
-            <p className="text-center text-lg text-white">Dar Lance de 5%</p>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

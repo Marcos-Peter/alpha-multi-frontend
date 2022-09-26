@@ -1,7 +1,10 @@
 import { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Modal } from '../Modal';
 import { useNavigate } from 'react-router';
+import { Modal } from '../Modal';
+import { isAuctionOpened } from '../../apiCalls/auction/isAuctionOpened';
+import { ModalMessage } from '../ModalMessage';
+import { Countdown } from '../Countdown/Countdown';
 
 /**
  * Archive: src/components/Card.tsx
@@ -13,7 +16,7 @@ import { useNavigate } from 'react-router';
  * Author: Athos Balmant
  */
 
- interface RespAuctionType {
+interface RespAuctionType {
   auction_id: string;
   winner_id: string | null;
   name: string;
@@ -31,7 +34,6 @@ import { useNavigate } from 'react-router';
 interface ChildrenTypes {
   children?: ReactElement;
   auction: RespAuctionType;
-    
 }
 
 const teste = () => {
@@ -40,15 +42,20 @@ const teste = () => {
 
 export const Card = ({ auction }: ChildrenTypes) => {
   const [modal, setModal] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleOpenAuction = () => {
-    if(new Date(auction.open_at) >= new Date()){
-      alert('Auction not open yet');
-    }else {
+    if (new Date(auction.open_at) >= new Date()) {
+      const verifyState = isAuctionOpened(auction.name);
+      verifyState.then((resp) => {
+        if (resp.data) {
+          setModalMessage(true);
+        }
+      });
+    } else {
       navigate(`/auction/${auction.auction_id}`);
     }
-    
   };
 
   return (
@@ -61,7 +68,15 @@ export const Card = ({ auction }: ChildrenTypes) => {
           handleConfirmModal={teste}
         />
       )}
-
+      {modalMessage && (
+        <ModalMessage
+          title="Aguarde"
+          message={`O leilão escolhido abre em:\n${new Date(
+            auction.open_at,
+          ).toLocaleString()}`}
+          setModal={setModalMessage}
+        />
+      )}
       <div className="hover:bg-gray-100 grid  relative w-[195px] h-[192px] m-2 mb-7 bg-gray-200  justify-center border-solid border-2 hover:border-3 hover:border-purple-900 rounded-2xl hover:shadow-2xl">
         <div
           onClick={handleOpenAuction}
@@ -78,7 +93,9 @@ export const Card = ({ auction }: ChildrenTypes) => {
             </h3>
             <div className="text-end h-[80px] w-[60px] mt-2 mr-3">
               <p className="text-[10px] mb-1">Preço atual:</p>
-              <p className="font-medium text-[10px]">R$ {auction.initial_price}</p>
+              <p className="font-medium text-[10px]">
+                R$ {auction.initial_price}
+              </p>
             </div>
             <div className="items-center w-32 flex flex-grow justify-center absolute -bottom-4 z-10"></div>
           </div>

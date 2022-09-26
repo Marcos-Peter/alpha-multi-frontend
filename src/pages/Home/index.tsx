@@ -58,11 +58,6 @@ export const Home = () => {
       return;
     }
 
-    /* if (!(email === confirmEmail)) {
-      alert('Os emails devem ser iguais');
-      return;
-    } */
-
     if (!(password === confirmPassword)) {
       setInputErrorMessage('As senhas devem ser iguais');
       return;
