@@ -140,7 +140,9 @@ export const Profile = () => {
                   <p className="text-white mr-2 hidden sm:inline ">
                     {userInfo.userLogged}
                   </p>
-                  <div className="bg-white w-10 h-10 rounded-full mr-10"></div>
+                  <div className="flex items-center justify-center bg-white w-10 h-10 rounded-full mr-10">
+                    <h1 className='font-body font-bold text-desaturatedBlue text-xl'>{userInfo.userLogged[0].toUpperCase()}</h1>
+                  </div>
                 </div>
               </div>
               <ProfileCard />

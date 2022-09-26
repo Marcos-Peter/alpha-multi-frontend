@@ -146,7 +146,9 @@ export const DashBoard = () => {
                   <p className="text-white mr-2 hidden sm:inline ">
                     {userInfo.userLogged}
                   </p>
-                  <div className="bg-white w-10 h-10 rounded-full mr-10"></div>
+                  <div className="flex items-center justify-center bg-white w-10 h-10 rounded-full mr-10">
+                    <h1 className='font-body font-bold text-desaturatedBlue text-xl'>{userInfo.userLogged[0].toUpperCase()}</h1>
+                  </div>
                 </div>
               </div>
               <div className="ml-16 grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-center bg-[#1F1F35] p-10 mb-7 rounded-3xl w-72 sm:w-[500px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1300px] min-h-5/6 overflow-auto">
