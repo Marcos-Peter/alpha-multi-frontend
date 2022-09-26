@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 interface PropType {
   duration: number;
-  setFinish: (bool: boolean) => void;
+  setFinish?: (bool: boolean) => void;
 }
 
 export const Countdown = ({ duration, setFinish }: PropType) => {
@@ -11,7 +11,9 @@ export const Countdown = ({ duration, setFinish }: PropType) => {
   const [timer, setTimer] = useState('00:00:00');
   useEffect(() => {
     if (timer === '00:00:01') {
+      if (setFinish) {
       setFinish(true);
+      }
     }
   }, [timer]);
   const getRemainingTime = (endTime: string | number | Date) => {

@@ -39,23 +39,18 @@ export default function Navbar({ selected }: ChildrenTypes) {
   }
 
   let navbarButtonDashboard = 'text-white';
-  let navbarButtonWallet = 'text-white';
   let navbarButtonProfile = 'text-white';
-  let navbarButtonAuction = 'text-white';
+
+  let navbarIconDashboard = 'bg-dashboard-white';
+  let navbarIconProfile = 'bg-profile-white';
 
   const selectedNavbar = (selectedItem: string) => {
     switch (selectedItem) {
       case 'dashboard':
         navbarButtonDashboard = 'text-purple-800';
         break;
-      case 'wallet':
-        navbarButtonWallet = 'text-purple-800';
-        break;
       case 'profile':
         navbarButtonProfile = 'text-purple-800';
-        break;
-      case 'auction':
-        navbarButtonAuction = 'text-purple-800';
         break;
       default:
         navbarButtonDashboard = 'text-white';
@@ -63,6 +58,21 @@ export default function Navbar({ selected }: ChildrenTypes) {
     }
   };
 
+  const selectedIconNavbar = (selectedItem: string) => {
+    switch (selectedItem) {
+      case 'dashboard':
+        navbarIconDashboard = 'bg-dashboard-purple';
+        break;
+      case 'profile':
+        navbarIconProfile = 'bg-profile-purple';
+        break;
+      default:
+        navbarButtonDashboard = 'text-white';
+        break;
+    }
+  };
+
+  selectedIconNavbar(selected);
   selectedNavbar(selected);
   return (
     <>
@@ -78,10 +88,10 @@ export default function Navbar({ selected }: ChildrenTypes) {
             <div className="not-italic font-bold text-sm leading-5 ">
               <ul>
                 <CustomLink to="/dashboard">
-                  <div className="w-5 h-5 mb-4 mr-3 bg-dashboard bg-contain border-none bg-center bg-no-repeat" />
+                  <div className={`w-5 h-5 mb-4 ml-1 ${navbarIconDashboard} bg-contain border-none bg-center bg-no-repeat`} />
                 </CustomLink>
-                <CustomLink to="/wallet">
-                  <div className="w-5 h-5 mb-4 mr-1 bg-wallet bg-contain border-none" />
+                <CustomLink to="/profile">
+                  <div className={`w-6 h-6 mb-4 ${navbarIconProfile} bg-contain border-none`} />
                 </CustomLink>
               </ul>
             </div>
@@ -114,12 +124,12 @@ export default function Navbar({ selected }: ChildrenTypes) {
             <div className="not-italic font-bold text-sm leading-5">
               <ul>
                 <CustomLink to="/dashboard">
-                  <div className="w-5 h-5 mb-4 mr-8 ml-0 bg-dashboard bg-contain border-none bg-center bg-no-repeat" />
+                  <div className={`w-5 h-5 mb-4 mr-8 ml-1 ${navbarIconDashboard} bg-contain border-none bg-center bg-no-repeat`} />
                   <p className={`${navbarButtonDashboard} `}>Dashboard</p>
                 </CustomLink>
-                <CustomLink to="/wallet">
-                  <div className="w-5 h-5 mb-4 mr-8 bg-wallet bg-contain border-none" />
-                  <p className={navbarButtonWallet}>Wallet</p>
+                <CustomLink to="/profile">
+                  <div className={`w-6 h-6 mb-4 mr-8 ${navbarIconProfile} bg-contain border-none`} />
+                  <p className={`${navbarButtonProfile} `}>Perfil</p>
                 </CustomLink>
               </ul>
             </div>

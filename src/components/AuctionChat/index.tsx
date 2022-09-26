@@ -73,7 +73,7 @@ export const AuctionChat = ({
             </div>
             <div className="flex">
               <div className="ml-8 bg-clock-time bg-no-repeat h-5 w-5"></div>
-              <p className="w-25 mb-2 text-sm">
+              <div className="flex mb-2 text-sm">
                 <Countdown
                   duration={diferenceSeconds(
                     new Date(),
@@ -81,8 +81,8 @@ export const AuctionChat = ({
                   )}
                   setFinish={setFinish}
                 />
-                para terminar
-              </p>
+                <p className='ml-1'> para terminar</p>
+              </div>
             </div>
           </div>
           <p className="w-25 text-end m-3 mr-5">
@@ -99,12 +99,10 @@ export const AuctionChat = ({
           </div>
           <div className="flex flex-col items-center">
             <p className="m-1">
-              Valor Inicial R${auctionData.initial_price} / Atual:{' '}
-              {`R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
+              {`Valor Inicial R$ ${inputMask(parseFloat(auctionData.initial_price.toString()).toFixed(2))} / Atual: R$ ${inputMask(parseFloat(actualBid.toString()).toFixed(2))}`}
             </p>
             <p className="m-1">
-              Leilão aberto às
-              {new Date(auctionData.open_at).toTimeString().split(' ')[0]}
+              {`Leilão aberto às ${new Date(auctionData.open_at).toTimeString().split(' ')[0]}`}
             </p>
           </div>
         </div>

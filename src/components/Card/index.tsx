@@ -58,6 +58,15 @@ export const Card = ({ auction }: ChildrenTypes) => {
     }
   };
 
+  function diferenceSeconds(data1: Date, data2: Date) {
+    // const startDate = new Date();
+
+    // const endDate = new Date('2022-09-25 18:30:00');
+    const seconds = (data2.getTime() - data1.getTime()) / 1000;
+
+    return seconds;
+  }
+
   return (
     <>
       {modal && (
@@ -82,6 +91,27 @@ export const Card = ({ auction }: ChildrenTypes) => {
           onClick={handleOpenAuction}
           className="flex flex-col justify-items-start justify-center items-center hover:cursor-pointer"
         >
+          
+          {
+          (new Date(auction.open_at) >= new Date()) &&(
+            <div className='flex flex-col justify-center items-center absolute w-2/3 h-10 bg-opacity-90 bg-red-400 rounded-md'>
+            <p className='text-xs font-bold'>Inicia em: </p>
+            <Countdown duration={diferenceSeconds(
+                    new Date(),
+                    new Date(auction.open_at),
+                  )} />
+          </div>)
+          }
+          {
+          (new Date(auction.open_at) <= new Date()) &&(
+            <div className='flex flex-col justify-center items-center absolute w-2/3 h-10 bg-opacity-90 bg-green-400 rounded-md'>
+            <p className=' text-xs font-bold'>Finaliza em: </p>
+            <Countdown duration={diferenceSeconds(
+                  new Date(),
+                  new Date(auction.close_at)
+                )} />
+          </div>)
+          }
           <img
             src={auction.photo}
             alt="Add Image"
@@ -92,7 +122,7 @@ export const Card = ({ auction }: ChildrenTypes) => {
               {auction.name}
             </h3>
             <div className="text-end h-[80px] w-[60px] mt-2 mr-3">
-              <p className="text-[10px] mb-1">Preço atual:</p>
+              <p className="text-[10px] mb-1">Preço Inicial:</p>
               <p className="font-medium text-[10px]">
                 R$ {auction.initial_price}
               </p>

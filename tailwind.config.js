@@ -16,7 +16,8 @@ module.exports = {
         }]},
       backgroundImage: {
         'auction': "url('../src/assets/auction.svg')",
-        'dashboard': "url('../src/assets/dashboard.svg')",
+        'dashboard-white': "url('../src/assets/dashboard-white.svg')",
+        'dashboard-purple': "url('../src/assets/dashboard-purple.svg')",
         'logout': "url('../src/assets/logout.svg')",
         'wallet': 'url("../src/assets/wallet.svg")',
         'icon-search': "url('../src/assets/icon-search.svg')",
@@ -34,6 +35,8 @@ module.exports = {
         'menu-black': 'url("../src/images/menu-black.svg")',
         'menu-white': 'url("../src/images/menu-white.svg")',
         'lupa-white': 'url("../src/images/lupa-white.svg")',
+        'profile-white': 'url("../src/images/profile-white.svg")',
+        'profile-purple': 'url("../src/images/profile-purple.svg")',
       },
       colors: {},
       borderRadius: {
