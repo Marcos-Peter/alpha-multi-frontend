@@ -69,7 +69,7 @@ export const Home = () => {
       setInputErrorMessage(result.message);
       return;
     }
-    
+
     navigate('/');
   };
 

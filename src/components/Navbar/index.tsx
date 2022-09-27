@@ -1,6 +1,7 @@
 import { ReactNode, useContext, useState } from 'react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 import { logout } from '../../apiCalls/logout';
+import Profile from '../../images/profile-white.svg';
 import { UserDataContext } from '../../providers/UserDataProvider';
 
 interface PropsType {
@@ -88,10 +89,14 @@ export default function Navbar({ selected }: ChildrenTypes) {
             <div className="not-italic font-bold text-sm leading-5 ">
               <ul>
                 <CustomLink to="/dashboard">
-                  <div className={`w-5 h-5 mb-4 ml-1 ${navbarIconDashboard} bg-contain border-none bg-center bg-no-repeat`} />
+                  <div
+                    className={`w-5 h-5 mb-4 ml-1 ${navbarIconDashboard} bg-contain border-none bg-center bg-no-repeat`}
+                  />
                 </CustomLink>
                 <CustomLink to="/profile">
-                  <div className={`w-6 h-6 mb-4 ${navbarIconProfile} bg-contain border-none`} />
+                  <div
+                    className={`w-6 h-6 mb-4 ${navbarIconProfile} bg-contain border-none`}
+                  />
                 </CustomLink>
               </ul>
             </div>
@@ -124,11 +129,19 @@ export default function Navbar({ selected }: ChildrenTypes) {
             <div className="not-italic font-bold text-sm leading-5">
               <ul>
                 <CustomLink to="/dashboard">
-                  <div className={`w-5 h-5 mb-4 mr-8 ml-1 ${navbarIconDashboard} bg-contain border-none bg-center bg-no-repeat`} />
+                  <div
+                    className={`w-5 h-5 mb-4 mr-8 ml-1 ${navbarIconDashboard} bg-contain border-none bg-center bg-no-repeat`}
+                  />
                   <p className={`${navbarButtonDashboard} `}>Dashboard</p>
                 </CustomLink>
                 <CustomLink to="/profile">
-                  <div className={`w-6 h-6 mb-4 mr-8 ${navbarIconProfile} bg-contain border-none`} />
+                  {/* <div
+                    className={`w-6 h-6 mb-4 mr-8 ${navbarIconProfile} bg-contain border-none`}
+                  /> */}
+                  <img
+                    className={`w-6 h-6 mb-4 mr-8 bg-contain border-none`}
+                    src={Profile}
+                  />
                   <p className={`${navbarButtonProfile} `}>Perfil</p>
                 </CustomLink>
               </ul>

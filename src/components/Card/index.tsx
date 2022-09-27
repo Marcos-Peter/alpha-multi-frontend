@@ -91,27 +91,28 @@ export const Card = ({ auction }: ChildrenTypes) => {
           onClick={handleOpenAuction}
           className="flex flex-col justify-items-start justify-center items-center hover:cursor-pointer"
         >
-          
-          {
-          (new Date(auction.open_at) >= new Date()) &&(
-            <div className='flex flex-col justify-center items-center absolute w-2/3 h-10 bg-opacity-90 bg-red-400 rounded-md'>
-            <p className='text-xs font-bold'>Inicia em: </p>
-            <Countdown duration={diferenceSeconds(
-                    new Date(),
-                    new Date(auction.open_at),
-                  )} />
-          </div>)
-          }
-          {
-          (new Date(auction.open_at) <= new Date()) &&(
-            <div className='flex flex-col justify-center items-center absolute w-2/3 h-10 bg-opacity-90 bg-green-400 rounded-md'>
-            <p className=' text-xs font-bold'>Finaliza em: </p>
-            <Countdown duration={diferenceSeconds(
+          {new Date(auction.open_at) >= new Date() && (
+            <div className="flex flex-col justify-center items-center absolute w-2/3 h-10 bg-opacity-90 bg-red-400 rounded-md">
+              <p className="text-xs font-bold">Inicia em: </p>
+              <Countdown
+                duration={diferenceSeconds(
                   new Date(),
-                  new Date(auction.close_at)
-                )} />
-          </div>)
-          }
+                  new Date(auction.open_at),
+                )}
+              />
+            </div>
+          )}
+          {new Date(auction.open_at) <= new Date() && (
+            <div className="flex flex-col justify-center items-center absolute w-2/3 h-10 bg-opacity-90 bg-green-400 rounded-md">
+              <p className=" text-xs font-bold">Finaliza em: </p>
+              <Countdown
+                duration={diferenceSeconds(
+                  new Date(),
+                  new Date(auction.close_at),
+                )}
+              />
+            </div>
+          )}
           <img
             src={auction.photo}
             alt="Add Image"
