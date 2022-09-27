@@ -1,15 +1,14 @@
+import { backEnd } from '../host';
+
 async function isAuctionClosed(name: string) {
-  const fetchResponse = await fetch(
-    `http://localhost:8000/isAuctionClosed/${name}`,
-    {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+  const fetchResponse = await fetch(`${backEnd}/isAuctionClosed/${name}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  );
+  });
 
   const responseJson = await fetchResponse.json();
 

@@ -1,3 +1,5 @@
+import { backEnd } from './host';
+
 async function changePassword(
   username: string,
   currentPassword: string,
@@ -9,7 +11,7 @@ async function changePassword(
     newPassword,
   };
 
-  const fetchResponse = await fetch('http://localhost:8000/changePassword', {
+  const fetchResponse = await fetch(`${backEnd}/changePassword`, {
     method: 'POST',
     credentials: 'include',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },

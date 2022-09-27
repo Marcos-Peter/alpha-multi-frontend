@@ -1,10 +1,12 @@
+import { backEnd } from './host';
+
 async function createLogin(username: string, password: string) {
   const body = {
     username,
     password,
   };
 
-  const fetchResponse = await fetch('http://localhost:8000/createLogin', {
+  const fetchResponse = await fetch(`${backEnd}/createLogin`, {
     method: 'POST',
     credentials: 'include',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },

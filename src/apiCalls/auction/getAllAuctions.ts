@@ -1,5 +1,7 @@
+import { backEnd } from '../host';
+
 async function getAllAuctions() {
-  const fetchResponse = await fetch(`http://localhost:8000/allAuctions`, {
+  const fetchResponse = await fetch(`${backEnd}/allAuctions`, {
     method: 'GET',
     credentials: 'include',
     headers: {
