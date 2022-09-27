@@ -42,7 +42,7 @@ export const DashBoard = () => {
   const [arrayCardsFiltered, setArrayCardsFiltered] = useState<
     RespAuctionType[]
   >([]);
-  //const [arrayActiveCards, setArrayActiveCards] = useState<RespAuctionType[]>(
+  // const [arrayActiveCards, setArrayActiveCards] = useState<RespAuctionType[]>(
 
   const cards = arrayCardsFiltered.map((card, index) => {
     // console.log(new Date() < new Date(card.close_at), card.name);
@@ -84,7 +84,7 @@ export const DashBoard = () => {
       if (array) {
         setArrayCardsFiltered(
           array.filter((card) => {
-            if(new Date(card.open_at) <= new Date()) {
+            if (new Date(card.open_at) <= new Date()) {
               return card;
             }
           }),
@@ -99,7 +99,7 @@ export const DashBoard = () => {
       if (array) {
         setArrayCardsFiltered(
           array.filter((card) => {
-            if(new Date(card.open_at) >= new Date()) {
+            if (new Date(card.open_at) >= new Date()) {
               return card;
             }
           }),
@@ -110,11 +110,11 @@ export const DashBoard = () => {
 
   const allFilterCards = () => {
     const teste = arrayCards();
-      teste.then((array) => {
-        if (array) {
-          setArrayCardsFiltered(array);
-        }
-      });
+    teste.then((array) => {
+      if (array) {
+        setArrayCardsFiltered(array);
+      }
+    });
   };
 
   useEffect(() => {
@@ -172,17 +172,34 @@ export const DashBoard = () => {
                     {userInfo.userLogged}
                   </p>
                   <div className="flex items-center justify-center bg-white w-10 h-10 rounded-full mr-10">
-                    <h1 className='font-body font-bold text-desaturatedBlue text-xl'>{userInfo.userLogged[0].toUpperCase()}</h1>
+                    <h1 className="font-body font-bold text-desaturatedBlue text-xl">
+                      {userInfo.userLogged[0].toUpperCase()}
+                    </h1>
                   </div>
                 </div>
               </div>
               <div className="ml-16 flex flex-col bg-[#1F1F35] px-14 py-10 mb-7 rounded-3xl w-fit h-5/6 ">
-                <div className=' flex w-1/4 justify-between  mb-3'>
-                  <div className='m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-5 h-12 rounded-lg border-[#D890DE] text-white' onClick={() => allFilterCards()}>Todos</div>
-                  <div className='m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-5 h-12 rounded-lg border-[#D890DE] text-white' onClick={() => activesFilterCards()}>Ativos</div>
-                  <div className='m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-3 h-12 rounded-lg border-[#D890DE] text-white whitespace-nowrap' onClick={() => soonFilterCards()}>Em Breve</div>
+                <div className=" flex w-1/4 justify-between  mb-3">
+                  <div
+                    className="m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-5 h-12 rounded-lg border-[#D890DE] text-white"
+                    onClick={() => allFilterCards()}
+                  >
+                    Todos
+                  </div>
+                  <div
+                    className="m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-5 h-12 rounded-lg border-[#D890DE] text-white"
+                    onClick={() => activesFilterCards()}
+                  >
+                    Ativos
+                  </div>
+                  <div
+                    className="m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-3 h-12 rounded-lg border-[#D890DE] text-white whitespace-nowrap"
+                    onClick={() => soonFilterCards()}
+                  >
+                    Em Breve
+                  </div>
                 </div>
-                <div className=' grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-center w-[288px] sm:w-[480px] md:w-[680px] lg:w-[880px] xl:w-[1080px] 2xl:w-[1280px] overflow-auto  '>
+                <div className=" grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-center w-[288px] sm:w-[480px] md:w-[680px] lg:w-[880px] xl:w-[1080px] 2xl:w-[1280px] overflow-auto  ">
                   {cards}
                 </div>
               </div>
