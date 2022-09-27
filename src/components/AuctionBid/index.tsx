@@ -94,7 +94,11 @@ export const AuctionBid = (props: PropTypes) => {
       {modalMessageEnd && (
         <ModalMessage
           title="Fim do Leilão"
-          message={`Ganhador: ${lastBid.name} Valor: ${lastBid.bid}`}
+          message={
+            lastBid.name
+              ? `Ganhador: ${lastBid.name} Valor: ${lastBid.bid}`
+              : 'Ninguém deu lance neste leilão'
+          }
           endpoint="/dashboard"
           setModal={setModalMessageEnd}
         />
