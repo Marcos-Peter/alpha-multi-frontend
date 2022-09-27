@@ -51,7 +51,7 @@ export const Home = () => {
   const handleSubmitRegister = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setInputErrorMessage('');
-    console.log(password, confirmPassword);
+
     // requisição para fazer registro no sistema
     if (!(name && password && confirmPassword)) {
       setInputErrorMessage('Favor preencher os inputs');

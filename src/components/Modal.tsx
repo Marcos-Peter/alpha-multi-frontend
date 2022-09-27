@@ -11,13 +11,13 @@ interface PropTypes {
 }
 
 /**
- * Archive: src/components/Card.tsx
+ * Archive: src/components/Modal.tsx
  *
- * Description: Modal edit/insert
+ * Description: Modal Card
  *
  * Date: 2022/08/20
  *
- * Author: Athos Balmant e Rey
+ * Author: Athos Balmant
  */
 
 export const Modal = ({
