@@ -50,7 +50,7 @@ export const Countdown = ({ duration, setFinish }: PropType) => {
   const clearTimer = (endTime: Date) => {
     setTimer('00:00:00');
     if (intervalRef.current) clearInterval(intervalRef.current);
-    const id = setInterval(() => startTimer(endTime), 1000);
+    const id = setInterval(() => startTimer(endTime), 600);
     intervalRef.current = id;
   };
 

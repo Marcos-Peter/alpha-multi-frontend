@@ -42,6 +42,7 @@ export const DashBoard = () => {
   const [arrayCardsFiltered, setArrayCardsFiltered] = useState<
     RespAuctionType[]
   >([]);
+  //const [arrayActiveCards, setArrayActiveCards] = useState<RespAuctionType[]>(
 
   const cards = arrayCardsFiltered.map((card, index) => {
     // console.log(new Date() < new Date(card.close_at), card.name);
@@ -62,21 +63,6 @@ export const DashBoard = () => {
     return resp.data as RespAuctionType[];
   };
 
-  /* const arrayTwoCards: JSX.Element[][] = [];
-  const corte = 3;
-
-  for (let i = 0; i < cards.length; i += corte) {
-    arrayTwoCards.push(cards.slice(i, i + corte));
-  }
-
-  const twoCards = arrayTwoCards.map((twoCard, index) => {
-    return (
-      <div key={index} className="grid md:flex relative">
-        {twoCard}
-      </div>
-    );
-  }); */
-
   const inputSearch = (event: any) => {
     if (event.target.value) {
       setSearch(true);
@@ -92,6 +78,45 @@ export const DashBoard = () => {
     );
   };
 
+  const activesFilterCards = () => {
+    const teste = arrayCards();
+    teste.then((array) => {
+      if (array) {
+        setArrayCardsFiltered(
+          array.filter((card) => {
+            if(new Date(card.open_at) <= new Date()) {
+              return card;
+            }
+          }),
+        );
+      }
+    });
+  };
+
+  const soonFilterCards = async () => {
+    const teste = arrayCards();
+    teste.then((array) => {
+      if (array) {
+        setArrayCardsFiltered(
+          array.filter((card) => {
+            if(new Date(card.open_at) >= new Date()) {
+              return card;
+            }
+          }),
+        );
+      }
+    });
+  };
+
+  const allFilterCards = () => {
+    const teste = arrayCards();
+      teste.then((array) => {
+        if (array) {
+          setArrayCardsFiltered(array);
+        }
+      });
+  };
+
   useEffect(() => {
     if (!search) {
       const teste = arrayCards();
@@ -103,7 +128,7 @@ export const DashBoard = () => {
         }
       });
     }
-  }, []);
+  }, [search]);
 
   return (
     <div>
@@ -151,8 +176,15 @@ export const DashBoard = () => {
                   </div>
                 </div>
               </div>
-              <div className="ml-16 grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-center bg-[#1F1F35] p-10 mb-7 rounded-3xl w-72 sm:w-[500px] md:w-[700px] lg:w-[900px] xl:w-[1100px] 2xl:w-[1300px] min-h-5/6 overflow-auto">
-                {cards}
+              <div className="ml-16 flex flex-col bg-[#1F1F35] px-14 py-10 mb-7 rounded-3xl w-fit h-5/6 ">
+                <div className=' flex w-1/4 justify-between  mb-3'>
+                  <div className='m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-5 h-12 rounded-lg border-[#D890DE] text-white' onClick={() => allFilterCards()}>Todos</div>
+                  <div className='m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-5 h-12 rounded-lg border-[#D890DE] text-white' onClick={() => activesFilterCards()}>Ativos</div>
+                  <div className='m-2 cursor-pointer hover:bg-slate-700 flex justify-center items-center border-2 w-fit px-3 h-12 rounded-lg border-[#D890DE] text-white whitespace-nowrap' onClick={() => soonFilterCards()}>Em Breve</div>
+                </div>
+                <div className=' grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 justify-center w-[288px] sm:w-[480px] md:w-[680px] lg:w-[880px] xl:w-[1080px] 2xl:w-[1280px] overflow-auto  '>
+                  {cards}
+                </div>
               </div>
             </div>
           )}

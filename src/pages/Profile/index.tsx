@@ -133,9 +133,6 @@ export const Profile = () => {
                     Auction
                   </p>
                 </div>
-                <div className="flex flex-row bg-[#1F1F3567] align-middle h-fit sm:w-1/3 w-[260px] ml-1 rounded-lg bg-[#202043]">
-                  <div className="w-12 h-12 bg-lupa-white bg-no-repeat bg-center " />
-                </div>
                 <div className="flex justify-center items-center align-middle">
                   <p className="text-white mr-2 hidden sm:inline ">
                     {userInfo.userLogged}
