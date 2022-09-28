@@ -130,7 +130,7 @@ export const Profile = () => {
                 <div className="flex ml-10 justify-end items-end">
                   <div className="ml-5 mr-2 w-[30px] h-10 bg-no-repeat bg-auction bg-contain border-none" />
                   <p className="not-italic font-bold text-base leading-7 text-white mb-1">
-                    Auction
+                    Arremata.ai
                   </p>
                 </div>
                 <div className="flex justify-center items-center align-middle">

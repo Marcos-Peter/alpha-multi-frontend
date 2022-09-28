@@ -101,7 +101,7 @@ export const AuctionBid = (props: PropTypes) => {
           title="Fim do Leilão"
           message={
             lastBid.name
-              ? `Ganhador: ${lastBid.name} Valor: ${lastBid.bid}`
+              ? `Verifique seu perfil para descobrir se você ganhou`
               : 'Ninguém deu lance neste leilão'
           }
           endpoint="/dashboard"

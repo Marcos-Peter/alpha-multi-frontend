@@ -122,7 +122,7 @@ export default function Navbar({ selected }: ChildrenTypes) {
                 className="ml-4 mr-2 mb-1 w-[30px] h-10 bg-no-repeat bg-auction bg-contain border-none"
               />
               <p className="not-italic font-bold text-base leading-7">
-                Auction
+                Arremata.ai
               </p>
             </div>
             <div className="not-italic font-bold text-sm leading-5">

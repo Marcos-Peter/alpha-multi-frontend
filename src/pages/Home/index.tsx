@@ -82,7 +82,7 @@ export const Home = () => {
           onSubmit={handleSubmitLogin}
         >
           <p className="h-10 not-italic font-normal text-4xl text-white mb-10">
-            Sistema de Leilão
+            Arremata.ai
           </p>
           <div className="box-border flex flex-col rounded">
             <input
