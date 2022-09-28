@@ -1,8 +1,5 @@
-import { ReactNode, useState } from 'react';
-import { currencyMask } from '../../masks/currencyMask';
 import { inputMask } from '../../masks/inputMask';
 import { Countdown } from '../Countdown/Countdown';
-import Wallet from '../../assets/wallet.svg';
 
 interface PropsType {
   content: string[];
@@ -73,10 +70,7 @@ export const AuctionChat = ({
               <h2 className=" mt-3 text-base font-bold ">Lances Ao Vivo</h2>
             </div>
             <div className="flex">
-              {/* <div className="ml-8 bg-clock-time bg-no-repeat h-5 w-5"> */}
-              <div className="ml-8 bg-no-repeat h-5 w-5">
-                <Wallet />
-              </div>
+              <div className="ml-8 bg-clock-time bg-no-repeat h-5 w-5"></div>
               <div className="flex mb-2 text-sm">
                 <Countdown
                   duration={diferenceSeconds(

@@ -1,7 +1,6 @@
 import { ReactNode, useContext, useState } from 'react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 import { logout } from '../../apiCalls/logout';
-import Profile from '../../images/profile-white.svg';
 import { UserDataContext } from '../../providers/UserDataProvider';
 
 interface PropsType {
@@ -135,12 +134,8 @@ export default function Navbar({ selected }: ChildrenTypes) {
                   <p className={`${navbarButtonDashboard} `}>Dashboard</p>
                 </CustomLink>
                 <CustomLink to="/profile">
-                  {/* <div
+                  <div
                     className={`w-6 h-6 mb-4 mr-8 ${navbarIconProfile} bg-contain border-none`}
-                  /> */}
-                  <img
-                    className={`w-6 h-6 mb-4 mr-8 bg-contain border-none`}
-                    src={Profile}
                   />
                   <p className={`${navbarButtonProfile} `}>Perfil</p>
                 </CustomLink>

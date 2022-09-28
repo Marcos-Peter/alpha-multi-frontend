@@ -5,8 +5,6 @@ import { PulseCards } from '../../components/PulseCards';
 import Navbar from '../../components/Navbar';
 import { UserDataContext } from '../../providers/UserDataProvider';
 import { getAllAuctions } from '../../apiCalls/auction/getAllAuctions';
-import { ProfileCard } from '../../components/ProfileCard';
-import { TermsCard } from '../../components/TermsCard';
 
 /**
  * Archive: src/pages/Dashboard/index.tsx
