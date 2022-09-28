@@ -52,7 +52,11 @@ export const AuctionBid = (props: PropTypes) => {
     if (finish) {
       const verifyState = isAuctionClosed(props.auctionData.name);
       verifyState.then((resp) => {
-        if (resp.data) {
+        if (resp.data.length > 0) {
+          setLastBid({
+            name: resp.data[0].winnerName,
+            bid: resp.data[0].winnerPrice,
+          });
           setModalMessageEnd(true);
         }
       });
@@ -180,10 +184,7 @@ export const AuctionBid = (props: PropTypes) => {
                       } else {
                         setWrongValue(true);
                       }
-                    } else {
-                      alert('aguarde a sua vez');
                     }
-
                     setBid('');
                   }
                 }}
