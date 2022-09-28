@@ -47,7 +47,7 @@ export const Auction = () => {
 
   const auctionID = window.location.pathname.split('/').pop() as string;
   const websocket = new WebSocket(
-    `ws://144.202.15.60:8080/ws?auctionID=${auctionID}&userName=${userInfo.userLogged}`,
+    `wss://144.202.15.60:8080/wss?auctionID=${auctionID}&userName=${userInfo.userLogged}`,
   );
   const [auctionData, setAuctionData] = useState<RespAuctionType>();
 
