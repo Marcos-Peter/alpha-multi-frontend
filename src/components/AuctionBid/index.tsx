@@ -52,11 +52,12 @@ export const AuctionBid = (props: PropTypes) => {
     if (finish) {
       const verifyState = isAuctionClosed(props.auctionData.name);
       verifyState.then((resp) => {
-        if (resp.data.length > 0) {
-          setLastBid({
+        if (resp.data) {
+          // resp.data.length > 0
+          /* setLastBid({
             name: resp.data[0].winnerName,
             bid: resp.data[0].winnerPrice,
-          });
+          }); */
           setModalMessageEnd(true);
         }
       });
